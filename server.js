@@ -20,9 +20,11 @@ var ingredients = [
     }
 ];
 
+
 app.get('/ingredients', function(request, response) {
     response.status(200).send(ingredients);
 });
+
 
 app.post('/ingredients', function(request, response) {
     var ingredient = request.body;
@@ -34,6 +36,7 @@ app.post('/ingredients', function(request, response) {
         response.status(200).send(ingredients);
     }
 });
+
 
 app.put('/ingredients/:_id', function(request, response) {
     
@@ -60,6 +63,34 @@ app.put('/ingredients/:_id', function(request, response) {
         }
     }
 });
+
+
+app.delete('/ingredients/:_id', function(request, response) {
+           
+    var objectFound = false;
+    for (var x = 0; x < ingredients.length; x++) {
+        var ing = ingredients[x];
+
+        if (ing._id === request.params._id) {
+            var index = ingredients.indexOf(ing);
+            if (index > -1) {
+                ingredients.splice(index, 1);
+            } else {
+                console.log("Could not remove the ingredient");
+            }
+            objectFound = true;
+            break;
+        }
+    }
+        
+    if (!objectFound) {
+        response.status(500).send({error:"Ingredient id not found"})
+    } else {
+        response.send(ingredients);
+    }
+    
+});
+
 
 app.listen(3004, function() {
     console.log("Meal Planner API running on port 3004...");
