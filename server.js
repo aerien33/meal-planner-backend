@@ -20,18 +20,44 @@ var ingredients = [
     }
 ];
 
-app.get('/', function(request, response) {
+app.get('/ingredients', function(request, response) {
     response.status(200).send(ingredients);
 });
 
-app.post('/', function(request, response) {
+app.post('/ingredients', function(request, response) {
     var ingredient = request.body;
     
-    if (!ingredient || ingredient.title == "") {
-        response.status(500).send({error: "The ingredient needs a title"});
+    if (!ingredient || ingredient.title === "") {
+        response.status(500).send({error: "Provide a title for the ingredient"});
     } else {
         ingredients.push(ingredient);
         response.status(200).send(ingredients);
+    }
+});
+
+app.put('/ingredients/:_id', function(request, response) {
+    
+    var newTitle = request.body.title;
+    
+    if (!newTitle || newTitle === "") {
+        response.status(500).send({error:"Provide a title for the ingredient"});
+    } else {
+        var objectFound = false;
+        for (var x = 0; x < ingredients.length; x++) {
+            var ing = ingredients[x];
+            
+            if (ing._id === request.params._id) {
+                ingredients[x].title = newTitle;
+                objectFound = true;
+                break;
+            }
+        }
+        
+        if (!objectFound) {
+            response.status(500).send({error:"Ingredient id was not found"});
+        } else {
+            response.send(ingredients);
+        }
     }
 });
 
