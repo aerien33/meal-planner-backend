@@ -1,0 +1,15 @@
+{
+  "name": "meal-planner-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/aerien33/meal-planner-backend"
+  },
+  "author": "Agnieszka Wawer",
+  "license": "ISC"
+}
