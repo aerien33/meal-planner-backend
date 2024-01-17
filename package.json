@@ -12,5 +12,8 @@
     "url": "http://github.com/aerien33/meal-planner-backend"
   },
   "author": "Agnieszka Wawer",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
