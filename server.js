@@ -25,8 +25,13 @@ var Ingredient = require('./model/ingredient');
 //];
 
 
-//app.get('/ingredients', function(request, response) {
-//    response.status(200).send(ingredients);
+//app.get('/ingredients', async (request, response) => {
+//    try {
+//        const ingredients = await Ingredient.find();
+//        response.status(200).send(ingredients);
+//    } catch {
+//        response.status(500).send({error:"Could not fetch ingredients"});
+//    }
 //});
 
 
@@ -35,10 +40,7 @@ app.post('/ingredients', async (request, response) => {
         const ingredient = await new Ingredient();
         ingredient.title = request.body.title;
         ingredient.quantity = request.body.quantity;
-        
-        if(!request.unit) {
-            ingredient.unit = request.body.unit;
-        }
+        ingredient.unit = request.body.unit;
         
         ingredient.save();
         response.status(200).send(ingredient);
