@@ -24,17 +24,6 @@ var Ingredient = require('./model/ingredient');
 //    }
 //];
 
-
-//app.get('/ingredients', async (request, response) => {
-//    try {
-//        const ingredients = await Ingredient.find();
-//        response.status(200).send(ingredients);
-//    } catch {
-//        response.status(500).send({error:"Could not fetch ingredients"});
-//    }
-//});
-
-
 app.post('/ingredients', async (request, response) => {
     try {
         const ingredient = await new Ingredient();
@@ -46,6 +35,15 @@ app.post('/ingredients', async (request, response) => {
         response.status(200).send(ingredient);
     } catch {
         response.status(500).send({error:"Could not save ingredient"});
+    }
+});
+
+app.get('/ingredients', async (request, response) => {
+    try {
+        const ingredients = await Ingredient.find();
+        response.status(200).send(ingredients);
+    } catch {
+        response.status(500).send({error:"Could not fetch ingredients"});
     }
 });
 
