@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
