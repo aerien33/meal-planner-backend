@@ -64,6 +64,15 @@ app.get('/ingredients', async (request, response) => {
 });
 
 
+app.get('/types', async (request, response) => {
+    try {
+        const types = await Type.find();
+        response.status(200).send(types);
+    } catch {
+        response.status(500).send({error:"Could not fetch types of meals"});
+    }
+});
+
 //app.put('/ingredients/:_id', function(request, response) {
 //    
 //    var newTitle = request.body.title;
