@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 var Ingredient = require('./model/ingredient');
+var Type = require('./model/type');
 
 //var ingredients = [
 //    {
@@ -37,6 +38,21 @@ app.post('/ingredients', async (request, response) => {
         response.status(500).send({error:"Could not save ingredient"});
     }
 });
+
+
+app.post('/types', async (request, response) => {
+    try {
+        const type = await new Type();
+        type.title = request.body.title;
+        type.defaultOrder = request.body.defaultOrder;
+        
+        type.save();
+        response.status(200).send(type);
+    } catch {
+        response.status(500).send({error:"Could not save type of meal"});
+    }
+});
+
 
 app.get('/ingredients', async (request, response) => {
     try {
