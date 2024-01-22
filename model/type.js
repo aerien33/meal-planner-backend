@@ -4,7 +4,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 //Type of meal, such as breakfast, lunch, dinner etc.
 var type = new Schema({
-    title: {type: String, required: true, unique: true},
+    title: {type: String, required: true},
     defaultOrder: {type: Number, required: true}
 });
 
