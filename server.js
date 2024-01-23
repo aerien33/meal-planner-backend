@@ -10,20 +10,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 var Ingredient = require('./model/ingredient');
 var Type = require('./model/type');
 
-//var ingredients = [
-//    {
-//        "_id": "38439438934",
-//        "title": "marchew",
-//        "quantity": 90,
-//        "unit": "g"
-//    },
-//    {
-//        "_id": "37378474343",
-//        "title": "pietruszka (korzeń)",
-//        "quantity": 80,
-//        "unit": "g"
-//    }
-//];
+
 
 app.post('/ingredients', async (request, response) => {
     try {
@@ -40,6 +27,7 @@ app.post('/ingredients', async (request, response) => {
 });
 
 
+
 app.post('/types', async (request, response) => {
     try {
         const type = await new Type();
@@ -54,6 +42,7 @@ app.post('/types', async (request, response) => {
 });
 
 
+
 app.get('/ingredients', async (request, response) => {
     try {
         const ingredients = await Ingredient.find();
@@ -62,6 +51,7 @@ app.get('/ingredients', async (request, response) => {
         response.status(500).send({error:"Could not fetch ingredients"});
     }
 });
+
 
 
 app.get('/types', async (request, response) => {
@@ -73,58 +63,29 @@ app.get('/types', async (request, response) => {
     }
 });
 
-//app.put('/ingredients/:_id', function(request, response) {
-//    
-//    var newTitle = request.body.title;
-//    
-//    if (!newTitle || newTitle === "") {
-//        response.status(500).send({error:"Provide a title for the ingredient"});
-//    } else {
-//        var objectFound = false;
-//        for (var x = 0; x < ingredients.length; x++) {
-//            var ing = ingredients[x];
-//            
-//            if (ing._id === request.params._id) {
-//                ingredients[x].title = newTitle;
-//                objectFound = true;
-//                break;
-//            }
-//        }
-//        
-//        if (!objectFound) {
-//            response.status(500).send({error:"Ingredient id was not found"});
-//        } else {
-//            response.send(ingredients);
-//        }
-//    }
-//});
 
 
-//app.delete('/ingredients/:_id', function(request, response) {
-//           
-//    var objectFound = false;
-//    for (var x = 0; x < ingredients.length; x++) {
-//        var ing = ingredients[x];
-//
-//        if (ing._id === request.params._id) {
-//            var index = ingredients.indexOf(ing);
-//            if (index > -1) {
-//                ingredients.splice(index, 1);
-//            } else {
-//                console.log("Could not remove the ingredient");
-//            }
-//            objectFound = true;
-//            break;
-//        }
-//    }
-//        
-//    if (!objectFound) {
-//        response.status(500).send({error:"Ingredient id not found"})
-//    } else {
-//        response.send(ingredients);
-//    }
-//    
-//});
+app.put('/ingredients/:_id', async (request, response) => {
+    try {
+        const ingredient = await Ingredient.findById(request.params._id);
+        const update = request.body;
+            
+        if (!update.title || update.title === "") {
+            response.status(500).send({error:"Please provide the title for the ingredient"});
+        } else if (!update.quantity || typeof update.quantity !== 'number') {
+            response.status(500).send({error:"Please provide the quantity for the ingredient as a number"});
+        } else if (!update.unit || update.unit === "") {
+            response.status(500).send({error:"Please provide the unit of the ingredient"});
+        } else {
+            const updated = ingredient.saveAs(update);
+            response.status(200).send(updated);
+        }
+        
+    } catch {
+        response.status(500).send({error:"Could not find the ingredient ID"});
+    }
+});
+
 
 
 app.listen(3004, function() {
