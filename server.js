@@ -22,7 +22,7 @@ app.post('/ingredients', async (request, response) => {
         ingredient.save();
         response.status(200).send(ingredient);
     } catch {
-        response.status(500).send({error:"Could not save ingredient"});
+        response.status(500).send({error:"Could not save the ingredient"});
     }
 });
 
@@ -37,7 +37,7 @@ app.post('/types', async (request, response) => {
         type.save();
         response.status(200).send(type);
     } catch {
-        response.status(500).send({error:"Could not save type of meal"});
+        response.status(500).send({error:"Could not save the type of meal"});
     }
 });
 
@@ -48,7 +48,7 @@ app.get('/ingredients', async (request, response) => {
         const ingredients = await Ingredient.find();
         response.status(200).send(ingredients);
     } catch {
-        response.status(500).send({error:"Could not fetch ingredients"});
+        response.status(500).send({error:"Could not fetch the ingredients"});
     }
 });
 
@@ -59,7 +59,7 @@ app.get('/types', async (request, response) => {
         const types = await Type.find();
         response.status(200).send(types);
     } catch {
-        response.status(500).send({error:"Could not fetch types of meals"});
+        response.status(500).send({error:"Could not fetch the types of meals"});
     }
 });
 
