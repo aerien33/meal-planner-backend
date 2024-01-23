@@ -15,12 +15,19 @@ var Type = require('./model/type');
 app.post('/ingredients', async (request, response) => {
     try {
         const ingredient = await new Ingredient();
-        ingredient.title = request.body.title;
-        ingredient.quantity = request.body.quantity;
-        ingredient.unit = request.body.unit;
+        const data = request.body;
         
-        ingredient.save();
-        response.status(200).send(ingredient);
+        if (!data.title || data.title === "") {
+            response.status(500).send({error:"Please provide the title for the ingredient"});
+        } else if (!data.quantity || typeof data.quantity !== 'number') {
+            response.status(500).send({error:"Please provide the quantity for the ingredient as a number"});
+        } else if (!data.unit || data.unit === "") {
+            response.status(500).send({error:"Please provide the unit of the ingredient"});
+        } else {
+            const created = ingredient.saveAs(data);
+            response.status(200).send(created);
+        }
+        
     } catch {
         response.status(500).send({error:"Could not save the ingredient"});
     }
