@@ -24,8 +24,13 @@ app.post('/ingredients', async (request, response) => {
         } else if (!data.unit || data.unit === "") {
             response.status(500).send({error:"Please provide the unit of the ingredient"});
         } else {
-            const created = ingredient.saveAs(data);
-            response.status(200).send(created);
+            const result = ingredient.saveAs(data);
+            
+            if(result.error) {
+                response.status(500).send(result);
+            } else {
+                response.status(200).send(result);
+            } 
         }
         
     } catch {
