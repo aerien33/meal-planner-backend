@@ -84,8 +84,13 @@ app.put('/ingredients/:_id', async (request, response) => {
         } else if (!update.unit || update.unit === "") {
             response.status(500).send({error:"Please provide the unit of the ingredient"});
         } else {
-            const updated = ingredient.saveAs(update);
-            response.status(200).send(updated);
+            const result = ingredient.saveAs(update);
+            
+            if(result.error) {
+                response.status(500).send(result);
+            } else {
+                response.status(200).send(result);
+            }
         }
         
     } catch {
