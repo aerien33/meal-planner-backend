@@ -4,6 +4,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 
+var jsonValidator = require('./service/jsonValidator');
+const Validator = new jsonValidator();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -16,20 +19,18 @@ app.post('/ingredients', async (request, response) => {
     try {
         const ingredient = await new Ingredient();
         const data = request.body;
+
+        const valid = Validator.validateIngredient(data);
         
-        if (!data.title || data.title === "") {
-            response.status(500).send({error:"Please provide the title for the ingredient"});
-        } else if (!data.quantity || typeof data.quantity !== 'number') {
-            response.status(500).send({error:"Please provide the quantity for the ingredient as a number"});
-        } else if (!data.unit || data.unit === "") {
-            response.status(500).send({error:"Please provide the unit of the ingredient"});
+        if(valid.error) {
+            response.status(500).send(valid);  
         } else {
-            const result = ingredient.saveAs(data);
+            const saved = ingredient.saveAs(valid);
             
-            if(result.error) {
-                response.status(500).send(result);
+            if(saved.error) {
+                response.status(500).send(saved);
             } else {
-                response.status(200).send(result);
+                response.status(200).send(saved);
             } 
         }
         
@@ -81,21 +82,19 @@ app.put('/ingredients/:_id', async (request, response) => {
     try {
         const ingredient = await Ingredient.findById(request.params._id);
         const update = request.body;
-            
-        if (!update.title || update.title === "") {
-            response.status(500).send({error:"Please provide the title for the ingredient"});
-        } else if (!update.quantity || typeof update.quantity !== 'number') {
-            response.status(500).send({error:"Please provide the quantity for the ingredient as a number"});
-        } else if (!update.unit || update.unit === "") {
-            response.status(500).send({error:"Please provide the unit of the ingredient"});
+        
+        const valid = Validator.validateIngredient(update);
+        
+        if(valid.error) {
+            response.status(500).send(valid);
         } else {
-            const result = ingredient.saveAs(update);
-            
-            if(result.error) {
-                response.status(500).send(result);
+            const saved = ingredient.saveAs(valid);
+        
+            if(saved.error) {
+                response.status(500).send(saved);
             } else {
-                response.status(200).send(result);
-            }
+                response.status(200).send(saved);
+            } 
         }
         
     } catch {
