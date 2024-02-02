@@ -104,6 +104,30 @@ app.put('/ingredients/:_id', async (request, response) => {
 
 
 
+app.delete('/ingredients/:_id', async (request, response) => {
+    try {
+        const ingredient = await Ingredient.findById(request.params._id);
+
+        try {
+            const info = await ingredient.deleteOne();
+
+            if(info.deletedCount == 1) {
+                response.status(200).send(ingredient);
+            } else {
+                response.status(500).send({error:info});
+            }
+
+        } catch {
+            response.status(500).send({error:"Could not delete the ingredient"});
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not find the ingredient ID"});
+    }
+});
+
+
+
 app.listen(3004, function() {
     console.log("Meal Planner API running on port 3004...");
 });
