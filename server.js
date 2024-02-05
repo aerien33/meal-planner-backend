@@ -44,11 +44,22 @@ app.post('/ingredients', async (request, response) => {
 app.post('/types', async (request, response) => {
     try {
         const type = await new Type();
-        type.title = request.body.title;
-        type.defaultOrder = request.body.defaultOrder;
-        
-        type.save();
-        response.status(200).send(type);
+        const data = request.body;
+
+        const valid = Validator.validateType(data);
+
+        if(valid.error) {
+            response.status(500).send(valid);
+        } else {
+            const saved = type.saveAs(valid);
+
+            if(saved.error) {
+                response.status(500).send(saved);
+            } else {
+                response.status(200).send(saved);
+            }
+        }
+
     } catch {
         response.status(500).send({error:"Could not save the type of meal"});
     }

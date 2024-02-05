@@ -8,4 +8,18 @@ var type = new Schema({
     defaultOrder: {type: Number, required: true}
 });
 
+type.methods.saveAs = function(data) {
+
+    this.title = data.title;
+
+    if (!(data.defaultOrder > 0)) {
+        return {error:"Default order needs to be greater than 0"};
+    } else {
+        this.defaultOrder = data.defaultOrder;
+    }
+
+    this.save();
+    return this;
+};
+
 module.exports = mongoose.model('Type', type);
