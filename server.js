@@ -163,6 +163,35 @@ app.delete('/ingredients/:_id', async (request, response) => {
 
 
 
+app.delete('/types/:_id', async (request, response) => {
+    try {
+        const type = await Type.findById(request.params._id);
+
+        if (type == null) {
+            response.status(500).send({error:"Could not find the ID of the type of meal"});
+            return;
+        }
+
+        try {
+            const info = await type.deleteOne();
+
+            if(info.deletedCount == 1) {
+                response.status(200).send(type);
+            } else {
+                response.status(500).send({error:info});
+            }
+
+        } catch {
+            response.status(500).send({error:"Could not delete the type of meal"});
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not find the ID of the type of meal"});
+    }
+});
+
+
+
 app.listen(3004, function() {
     console.log("Meal Planner API running on port 3004...");
 });
