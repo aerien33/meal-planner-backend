@@ -113,6 +113,30 @@ app.put('/ingredients/:_id', async (request, response) => {
     }
 });
 
+app.put('/types/:_id', async (request, response) => {
+    try {
+        const type = await Type.findById(request.params._id);
+        const update = request.body;
+
+        const valid = Validator.validateType(update);
+
+        if(valid.error) {
+            response.status(500).send(valid);
+        } else {
+            const saved = type.saveAs(valid);
+
+            if(saved.error) {
+                response.status(500).send(saved);
+            } else {
+                response.status(200).send(saved);
+            }
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not find the ID of the type of meal"});
+    }
+});
+
 
 
 app.delete('/ingredients/:_id', async (request, response) => {
