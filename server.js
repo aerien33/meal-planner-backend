@@ -78,6 +78,26 @@ app.get('/ingredients', async (request, response) => {
 
 
 
+app.get('/ingredients/filter', async (request, response) => {
+    try {
+        const filter = request.body;
+        const ingredients = await Ingredient.find(filter);
+
+        if(!Array.isArray(ingredients)) {
+            response.status(500).send({error:"Could not fetch the array of ingredients matching this filter criteria"});
+        } else if (!ingredients.length) {
+            response.status(500).send({error:"There are no ingredients matching this filter criteria"});
+        } else {
+            response.status(200).send(ingredients);
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not fetch the ingredients matching this filter criteria"});
+    }
+});
+
+
+
 app.get('/types', async (request, response) => {
     try {
         const types = await Type.find();
