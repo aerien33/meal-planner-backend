@@ -143,6 +143,11 @@ app.delete('/ingredients/:_id', async (request, response) => {
     try {
         const ingredient = await Ingredient.findById(request.params._id);
 
+        if (ingredient == null) {
+            response.status(500).send({error:"Could not find the ingredient ID"});
+            return;
+        }
+
         try {
             const info = await ingredient.deleteOne();
 
