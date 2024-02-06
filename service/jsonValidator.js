@@ -13,14 +13,14 @@ class jsonValidator {
     }
 
     validateType(data) {
-            if (!data.title || data.title === "") {
-                return {error:"Please provide the title for the type of meal"};
-            } else if (!data.defaultOrder || typeof data.defaultOrder !== 'number') {
-                return {error:"Please provide default order of this type of meal as a number"};
-            } else {
-                return data;
-            }
+        if (!data.title || data.title === "") {
+            return {error:"Please provide the title for the type of meal"};
+        } else if (!data.defaultOrder || typeof data.defaultOrder !== 'number') {
+            return {error:"Please provide default order of this type of meal as a number"};
+        } else {
+            return data;
         }
+    }
 
 }
 
