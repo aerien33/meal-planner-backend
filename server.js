@@ -109,6 +109,26 @@ app.get('/types', async (request, response) => {
 
 
 
+app.get('/types/filter', async (request, response) => {
+    try {
+        const filter = request.body;
+        const types = await Type.find(filter);
+
+        if(!Array.isArray(types)) {
+            response.status(500).send({error:"Could not fetch the array of meal types matching this filter criteria"});
+        } else if (!types.length) {
+            response.status(500).send({error:"There are no meal types matching this filter criteria"});
+        } else {
+            response.status(200).send(types);
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not fetch the meal types matching this filter criteria"});
+    }
+});
+
+
+
 app.put('/ingredients/:_id', async (request, response) => {
     try {
         const ingredient = await Ingredient.findById(request.params._id);
@@ -132,6 +152,8 @@ app.put('/ingredients/:_id', async (request, response) => {
         response.status(500).send({error:"Could not find the ingredient ID"});
     }
 });
+
+
 
 app.put('/types/:_id', async (request, response) => {
     try {
