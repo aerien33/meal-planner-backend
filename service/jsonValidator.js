@@ -1,6 +1,19 @@
+var Ingredient = require('../model/ingredient');
+var Type = require('../model/type');
+
 class jsonValidator {
+
+    validate(data, model) {
+        if (model instanceof Ingredient) {
+            return this.#validateIngredient(data);
+        } else if (model instanceof Type) {
+            return this.#validateType(data);
+        } else {
+            return {error:"Validation of this model is not supported"};
+        }
+    }
     
-    validateIngredient(data) {
+    #validateIngredient(data) {
         if (!data.title || data.title === "") {
             return {error:"Please provide the title for the ingredient"};
         } else if (!data.quantity || typeof data.quantity !== 'number') {
@@ -12,7 +25,7 @@ class jsonValidator {
         }
     }
 
-    validateType(data) {
+    #validateType(data) {
         if (!data.title || data.title === "") {
             return {error:"Please provide the title for the type of meal"};
         } else if (!data.defaultOrder || typeof data.defaultOrder !== 'number') {

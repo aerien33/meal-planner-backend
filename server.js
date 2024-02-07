@@ -7,6 +7,9 @@ var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 var jsonValidator = require('./service/jsonValidator');
 const Validator = new jsonValidator();
 
+var ingredientService = require('./service/impl/ingredientService');
+const IngredientService = new ingredientService(Validator);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -17,23 +20,15 @@ var Type = require('./model/type');
 
 app.post('/ingredients', async (request, response) => {
     try {
-        const ingredient = await new Ingredient();
         const data = request.body;
+        const saved = await IngredientService.createItem(data);
 
-        const valid = Validator.validateIngredient(data);
-        
-        if(valid.error) {
-            response.status(500).send(valid);  
+        if(saved.error) {
+            response.status(500).send(saved);
         } else {
-            const saved = ingredient.saveAs(valid);
-            
-            if(saved.error) {
-                response.status(500).send(saved);
-            } else {
-                response.status(200).send(saved);
-            } 
+            response.status(200).send(saved);
         }
-        
+
     } catch {
         response.status(500).send({error:"Could not save the ingredient"});
     }
