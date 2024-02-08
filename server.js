@@ -4,8 +4,14 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 
+var modelFactory =  require('./service/modelFactory');
+const Factory = new modelFactory();
+
 var jsonValidator = require('./service/jsonValidator');
 const Validator = new jsonValidator();
+
+var dataService = require('./service/dataService');
+const DataService = new dataService(Factory, Validator);
 
 var ingredientService = require('./service/impl/ingredientService');
 const IngredientService = new ingredientService(Validator);
@@ -24,7 +30,7 @@ var Type = require('./model/type');
 app.post('/ingredients', async (request, response) => {
     try {
         const data = request.body;
-        const saved = await IngredientService.createItem(data);
+        const saved = await DataService.createItem(data, "ingredient");
 
         if(saved.error) {
             response.status(500).send(saved);

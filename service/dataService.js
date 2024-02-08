@@ -2,25 +2,23 @@
 // Abstract Class
 class DataService {
 
+    #factory;
     #validator;
 
-    constructor(validator) {
-        if (this.constructor === DataService) {
-            throw new Error("Abstract classes can't be instantiated.");
-        } else {
-            this.validator = validator;
-        }
+    constructor(factory, validator) {
+        this.#factory = factory;
+        this.#validator = validator;
     }
 
 
 
     //Template methods
-    async createItem(data) {
+     async createItem(data, model) {
         try {
-            const item = await this.createModel();
+            const item = await this.createModel(model);
             const valid = this.validateItem(data, item);
 
-            if(valid.error) {
+            if (valid.error) {
                 return valid;
             } else {
                 const saved = this.saveItem(valid, item);
@@ -55,12 +53,12 @@ class DataService {
 
 
     //Supporting methods
-    async createModel() {
-        throw new Error("Method 'createModel()' must be implemented.");
+    async createModel(model) {
+        return this.#factory.createModel(model);
     }
 
     validateItem(data, model) {
-        return this.validator.validate(data, model);
+        return this.#validator.validate(data, model);
     }
 
     saveItem(data, item) {
