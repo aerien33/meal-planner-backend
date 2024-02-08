@@ -5,12 +5,11 @@ var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 
 var modelFactory =  require('./service/modelFactory');
-const Factory = new modelFactory();
-
 var jsonValidator = require('./service/jsonValidator');
-const Validator = new jsonValidator();
-
 var dataService = require('./service/dataService');
+
+const Factory = new modelFactory();
+const Validator = new jsonValidator();
 const DataService = new dataService(Factory, Validator);
 
 app.use(bodyParser.json());
