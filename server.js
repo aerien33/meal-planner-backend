@@ -13,12 +13,6 @@ const Validator = new jsonValidator();
 var dataService = require('./service/dataService');
 const DataService = new dataService(Factory, Validator);
 
-var ingredientService = require('./service/impl/ingredientService');
-const IngredientService = new ingredientService(Validator);
-
-var typeService = require('./service/impl/typeService');
-const TypeService = new typeService(Validator);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -48,7 +42,7 @@ app.post('/ingredients', async (request, response) => {
 app.post('/types', async (request, response) => {
     try {
         const data = request.body;
-        const saved = await TypeService.createItem(data);
+        const saved = await DataService.createItem(data, "type");
 
         if(saved.error) {
             response.status(500).send(saved);
