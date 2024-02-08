@@ -3,10 +3,10 @@ var Type = require('../model/type');
 
 class jsonValidator {
 
-    validate(data, model) {
-        if (model instanceof Ingredient) {
+    validateItem(data, item) {
+        if (item instanceof Ingredient) {
             return this.#validateIngredient(data);
-        } else if (model instanceof Type) {
+        } else if (item instanceof Type) {
             return this.#validateType(data);
         } else {
             return {error:"Validation of this model is not supported"};

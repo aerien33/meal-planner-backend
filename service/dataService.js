@@ -58,7 +58,7 @@ class DataService {
     }
 
     validateItem(data, model) {
-        return this.#validator.validate(data, model);
+        return this.#validator.validateItem(data, model);
     }
 
     saveItem(data, item) {
