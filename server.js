@@ -10,6 +10,9 @@ const Validator = new jsonValidator();
 var ingredientService = require('./service/impl/ingredientService');
 const IngredientService = new ingredientService(Validator);
 
+var typeService = require('./service/impl/typeService');
+const TypeService = new typeService(Validator);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -38,21 +41,13 @@ app.post('/ingredients', async (request, response) => {
 
 app.post('/types', async (request, response) => {
     try {
-        const type = await new Type();
         const data = request.body;
+        const saved = await TypeService.createItem(data);
 
-        const valid = Validator.validateType(data);
-
-        if(valid.error) {
-            response.status(500).send(valid);
+        if(saved.error) {
+            response.status(500).send(saved);
         } else {
-            const saved = type.saveAs(valid);
-
-            if(saved.error) {
-                response.status(500).send(saved);
-            } else {
-                response.status(200).send(saved);
-            }
+            response.status(200).send(saved);
         }
 
     } catch {
