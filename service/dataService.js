@@ -53,12 +53,16 @@ class DataService {
 
 
     //Supporting methods
-    async createModel(model) {
-        return this.#factory.createModel(model);
+    async createModel(Model) {
+        try {
+            return new Model();
+        } catch {
+            return {error: "Could not create the model"};
+        }
     }
 
-    validateItem(data, model) {
-        return this.#validator.validateItem(data, model);
+    validateItem(data, item) {
+        return this.#Validator.validateItem(data, item);
     }
 
     saveItem(data, item) {
