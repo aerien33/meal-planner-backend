@@ -20,6 +20,14 @@ class DataService {
         return this.createItem(data, this._Models.type);
     }
 
+    async getAllIngredients() {
+        return this.getAll(this._Models.ingredient);
+    }
+
+    async getAllTypes() {
+        return this.getAll(this._Models.type);
+    }
+
 
 
     //Template methods
@@ -41,8 +49,12 @@ class DataService {
     }
 
 
-    async getAll() {
-        throw new Error("Method 'getAll()' must be implemented.");
+    async getAll(Model) {
+        try {
+            return Model.find();
+        } catch {
+            return {error: "Could not fetch the items"};
+        }
     }
 
 

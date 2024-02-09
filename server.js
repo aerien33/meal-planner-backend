@@ -55,7 +55,7 @@ app.post('/types', async (request, response) => {
 
 app.get('/ingredients', async (request, response) => {
     try {
-        const ingredients = await Ingredient.find();
+        const ingredients = await DataService.getAllIngredients();
         response.status(200).send(ingredients);
     } catch {
         response.status(500).send({error:"Could not fetch the ingredients"});
@@ -86,7 +86,7 @@ app.get('/ingredients/filter', async (request, response) => {
 
 app.get('/types', async (request, response) => {
     try {
-        const types = await Type.find();
+        const types = await DataService.getAllTypes();
         response.status(200).send(types);
     } catch {
         response.status(500).send({error:"Could not fetch the types of meals"});
