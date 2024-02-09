@@ -11,6 +11,16 @@ class DataService {
     }
 
 
+    //Simple API
+    async createIngredient(data) {
+        return this.createItem(data, this._Models.ingredient);
+    }
+
+    async createType(data) {
+        return this.createItem(data, this._Models.type);
+    }
+
+
 
     //Template methods
      async createItem(data, Model) {

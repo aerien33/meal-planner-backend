@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.post('/ingredients', async (request, response) => {
     try {
         const data = request.body;
-        const saved = await DataService.createItem(data, Models.ingredient);
+        const saved = await DataService.createIngredient(data);
 
         if(saved.error) {
             response.status(500).send(saved);
@@ -38,7 +38,7 @@ app.post('/ingredients', async (request, response) => {
 app.post('/types', async (request, response) => {
     try {
         const data = request.body;
-        const saved = await DataService.createItem(data, Models.type);
+        const saved = await DataService.createType(data);
 
         if(saved.error) {
             response.status(500).send(saved);
