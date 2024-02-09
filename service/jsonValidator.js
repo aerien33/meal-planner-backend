@@ -1,12 +1,16 @@
-var Ingredient = require('../model/ingredient');
-var Type = require('../model/type');
 
 class jsonValidator {
 
+    #Models;
+
+    constructor(Models) {
+        this.#Models = Models;
+    }
+
     validateItem(data, item) {
-        if (item instanceof Ingredient) {
+        if (item instanceof this.#Models.ingredient) {
             return this.#validateIngredient(data);
-        } else if (item instanceof Type) {
+        } else if (item instanceof this.#Models.type) {
             return this.#validateType(data);
         } else {
             return {error:"Validation of this model is not supported"};

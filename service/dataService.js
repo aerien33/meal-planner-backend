@@ -2,20 +2,20 @@
 // Abstract Class
 class DataService {
 
-    #factory;
-    #validator;
+    _Models;
+    #Validator;
 
-    constructor(factory, validator) {
-        this.#factory = factory;
-        this.#validator = validator;
+    constructor(Models, Validator) {
+        this._Models = Models;
+        this.#Validator = Validator;
     }
 
 
 
     //Template methods
-     async createItem(data, model) {
+     async createItem(data, Model) {
         try {
-            const item = await this.createModel(model);
+            const item = await this.createModel(Model);
             const valid = this.validateItem(data, item);
 
             if (valid.error) {
