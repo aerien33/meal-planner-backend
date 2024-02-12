@@ -113,25 +113,18 @@ app.get('/types/filter', async (request, response) => {
 
 app.put('/ingredients/:_id', async (request, response) => {
     try {
-        const ingredient = await Ingredient.findById(request.params._id);
+        const id = request.params._id;
         const update = request.body;
-        
-        const valid = Validator.validateIngredient(update);
-        
-        if(valid.error) {
-            response.status(500).send(valid);
+        const saved = await DataService.updateIngredient(id, update);
+
+        if(saved.error) {
+            response.status(500).send(saved);
         } else {
-            const saved = ingredient.saveAs(valid);
-        
-            if(saved.error) {
-                response.status(500).send(saved);
-            } else {
-                response.status(200).send(saved);
-            } 
+            response.status(200).send(saved);
         }
-        
+
     } catch {
-        response.status(500).send({error:"Could not find the ingredient ID"});
+        response.status(500).send({error:"Could not update the ingredient"});
     }
 });
 
@@ -139,25 +132,18 @@ app.put('/ingredients/:_id', async (request, response) => {
 
 app.put('/types/:_id', async (request, response) => {
     try {
-        const type = await Type.findById(request.params._id);
+        const id = request.params._id;
         const update = request.body;
+        const saved = await DataService.updateType(id, update);
 
-        const valid = Validator.validateType(update);
-
-        if(valid.error) {
-            response.status(500).send(valid);
+        if(saved.error) {
+            response.status(500).send(saved);
         } else {
-            const saved = type.saveAs(valid);
-
-            if(saved.error) {
-                response.status(500).send(saved);
-            } else {
-                response.status(200).send(saved);
-            }
+            response.status(200).send(saved);
         }
 
     } catch {
-        response.status(500).send({error:"Could not find the ID of the type of meal"});
+        response.status(500).send({error:"Could not update the type of meal"});
     }
 });
 

@@ -36,6 +36,14 @@ class DataService {
         return this.findItems(filter, this._Models.type);
     }
 
+    async updateIngredient(id, data) {
+        return this.updateItem(id, data, this._Models.ingredient);
+    }
+
+    async updateType(id, data) {
+        return this.updateItem(id, data, this._Models.type);
+    }
+
 
 
     //Template methods
@@ -84,8 +92,21 @@ class DataService {
     }
 
 
-    async updateItem(id) {
-         throw new Error("Method 'update(id)' must be implemented.");
+    async updateItem(id, data, Model) {
+         try {
+             const item = await this.findItemByID(id, Model);
+             const valid = this.validateItem(data, item);
+
+             if (valid.error) {
+                 return valid;
+             } else {
+                 const saved = this.saveItem(valid, item);
+                 return saved;
+             }
+
+         } catch {
+             return {error: "Could not update the item"};
+         }
     }
 
 
@@ -110,6 +131,10 @@ class DataService {
 
     saveItem(data, item) {
         return item.saveAs(data);
+    }
+
+    async findItemByID(id, Model) {
+        return Model.findById(id);
     }
 
     getID(item) {
