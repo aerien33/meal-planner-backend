@@ -13,11 +13,11 @@ class DataService {
 
     //Simple API
     async createIngredient(data) {
-        return this.createItem(data, this._Models.ingredient);
+        return this.saveItem(null, data, this._Models.ingredient);
     }
 
     async createType(data) {
-        return this.createItem(data, this._Models.type);
+        return this.saveItem(null, data, this._Models.type);
     }
 
     async getAllIngredients() {
@@ -37,25 +37,25 @@ class DataService {
     }
 
     async updateIngredient(id, data) {
-        return this.updateItem(id, data, this._Models.ingredient);
+        return this.saveItem(id, data, this._Models.ingredient);
     }
 
     async updateType(id, data) {
-        return this.updateItem(id, data, this._Models.type);
+        return this.saveItem(id, data, this._Models.type);
     }
 
 
 
     //Template methods
-     async createItem(data, Model) {
+    async saveItem(id, data, Model) {
         try {
-            const item = await this.createModel(Model);
+            const item = await this.getItemToSave(id, Model);
             const valid = this.validateItem(data, item);
 
             if (valid.error) {
                 return valid;
             } else {
-                const saved = this.saveItem(valid, item);
+                const saved = this.saveToDatabase(valid, item);
                 return saved;
             }
 
@@ -92,24 +92,6 @@ class DataService {
     }
 
 
-    async updateItem(id, data, Model) {
-         try {
-             const item = await this.findItemByID(id, Model);
-             const valid = this.validateItem(data, item);
-
-             if (valid.error) {
-                 return valid;
-             } else {
-                 const saved = this.saveItem(valid, item);
-                 return saved;
-             }
-
-         } catch {
-             return {error: "Could not update the item"};
-         }
-    }
-
-
     async deleteItem(id) {
          throw new Error("Method 'delete(id)' must be implemented.");
     }
@@ -117,11 +99,23 @@ class DataService {
 
 
     //Supporting methods
-    async createModel(Model) {
+    async createItem(Model) {
         try {
             return new Model();
         } catch {
-            return {error: "Could not create the model"};
+            return {error: "Could not create the instance of this model"};
+        }
+    }
+
+    async getItemToSave(id, Model) {
+        try {
+            if (!id) {
+                return this.createItem(Model);
+            } else {
+                return this.findItemByID(id, Model);
+            }
+        } catch {
+            return {error: "Could not get the item which will be saved"};
         }
     }
 
@@ -129,7 +123,7 @@ class DataService {
         return this.#Validator.validateItem(data, item);
     }
 
-    saveItem(data, item) {
+    saveToDatabase(data, item) {
         return item.saveAs(data);
     }
 
