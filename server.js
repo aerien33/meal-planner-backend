@@ -67,18 +67,16 @@ app.get('/ingredients', async (request, response) => {
 app.get('/ingredients/filter', async (request, response) => {
     try {
         const filter = request.body;
-        const ingredients = await Ingredient.find(filter);
+        const ingredients = await DataService.findIngredients(filter);
 
-        if(!Array.isArray(ingredients)) {
-            response.status(500).send({error:"Could not fetch the array of ingredients matching this filter criteria"});
-        } else if (!ingredients.length) {
-            response.status(500).send({error:"There are no ingredients matching this filter criteria"});
+        if(ingredients.error) {
+            response.status(500).send(ingredients);
         } else {
             response.status(200).send(ingredients);
         }
 
     } catch {
-        response.status(500).send({error:"Could not fetch the ingredients matching this filter criteria"});
+        response.status(500).send({error:"Could not fetch ingredients matching this filter criteria"});
     }
 });
 
@@ -98,18 +96,16 @@ app.get('/types', async (request, response) => {
 app.get('/types/filter', async (request, response) => {
     try {
         const filter = request.body;
-        const types = await Type.find(filter);
+        const types = await DataService.findTypes(filter);
 
-        if(!Array.isArray(types)) {
-            response.status(500).send({error:"Could not fetch the array of meal types matching this filter criteria"});
-        } else if (!types.length) {
-            response.status(500).send({error:"There are no meal types matching this filter criteria"});
+        if(types.error) {
+            response.status(500).send(types);
         } else {
             response.status(200).send(types);
         }
 
     } catch {
-        response.status(500).send({error:"Could not fetch the meal types matching this filter criteria"});
+        response.status(500).send({error:"Could not fetch meal types matching this filter criteria"});
     }
 });
 

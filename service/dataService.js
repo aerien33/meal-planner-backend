@@ -28,6 +28,14 @@ class DataService {
         return this.getAll(this._Models.type);
     }
 
+    async findIngredients(filter) {
+        return this.findItems(filter, this._Models.ingredient);
+    }
+
+    async findTypes(filter) {
+        return this.findItems(filter, this._Models.type);
+    }
+
 
 
     //Template methods
@@ -58,8 +66,21 @@ class DataService {
     }
 
 
-    async getSelected(filter) {
-         throw new Error("Method 'getSelected(filter)' must be implemented.");
+    async findItems(filter, Model) {
+         try {
+             const items = await Model.find(filter);
+
+             if(!Array.isArray(items)) {
+                 return {error:"Could not fetch the array of items matching this filter criteria"};
+             } else if (!items.length) {
+                 return {error:"There are no items matching this filter criteria"};
+             } else {
+                 return items;
+             }
+
+         } catch {
+             return {error:"Could not fetch items matching this filter criteria"};
+         }
     }
 
 
