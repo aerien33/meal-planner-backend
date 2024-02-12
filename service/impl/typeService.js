@@ -1,14 +1,22 @@
 var DataService = require('../dataService');
-var Type = require('../../model/type');
 
 class TypeService extends DataService {
 
-    constructor(validator) {
-        super(validator);
+    constructor(Models, Validator) {
+        super(Models, Validator);
     }
 
-    async createModel() {
-        return new Type();
+
+    async createItem(data) {
+        return super.createItem(data, this._Models.type);
+    }
+
+    async getAll() {
+        try {
+            return super.getAll(this._Models.type);
+        } catch {
+            return {error: "Could not fetch the meal types"};
+        }
     }
 
 }

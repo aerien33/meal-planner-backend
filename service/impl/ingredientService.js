@@ -1,14 +1,22 @@
 var DataService = require('../dataService');
-var Ingredient = require('../../model/ingredient');
 
 class IngredientService extends DataService {
 
-    constructor(validator) {
-        super(validator);
+    constructor(Models, Validator) {
+        super(Models, Validator);
     }
 
-    async createModel() {
-        return new Ingredient();
+
+    async createItem(data) {
+        return super.createItem(data, this._Models.ingredient);
+    }
+
+    async getAll() {
+        try {
+            return super.getAll(this._Models.ingredient);
+        } catch {
+            return {error: "Could not fetch the ingredients"};
+        }
     }
 
 }
