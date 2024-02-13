@@ -50,13 +50,18 @@ class DataService {
     async saveItem(id, data, Model) {
         try {
             const item = await this.getItemToSave(id, Model);
-            const valid = this.validateItem(data, item);
 
-            if (valid.error) {
-                return valid;
+            if (item.error) {
+                return item;
             } else {
-                const saved = this.saveToDatabase(valid, item);
-                return saved;
+                const valid = this.validateItem(data, item);
+
+                if (valid.error) {
+                    return valid;
+                } else {
+                    const saved = this.saveToDatabase(valid, item);
+                    return saved;
+                }
             }
 
         } catch {
