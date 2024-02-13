@@ -101,7 +101,14 @@ class DataService {
     //Supporting methods
     async createItem(Model) {
         try {
-            return new Model();
+            const item = await new Model();
+
+            if (item == null) {
+                return {error: "Could not create the instance of this model"};
+            } else {
+                return item;
+            }
+
         } catch {
             return {error: "Could not create the instance of this model"};
         }
