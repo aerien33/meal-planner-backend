@@ -44,6 +44,14 @@ class DataService {
         return this.saveItem(id, data, this._Models.type);
     }
 
+    async deleteIngredient(id) {
+        return this.deleteItem(id, this._Models.ingredient);
+    }
+
+    async deleteType(id) {
+        return this.deleteItem(id, this._Models.type);
+    }
+
 
 
     //Template methods
@@ -97,8 +105,25 @@ class DataService {
     }
 
 
-    async deleteItem(id) {
-         throw new Error("Method 'delete(id)' must be implemented.");
+    async deleteItem(id, Model) {
+         try {
+             const item = await this.findItemByID(id, Model);
+
+             if (item.error) {
+                 return item;
+             } else {
+                 const info = await this.deleteFromDatabase(item);
+
+                 if (info.error) {
+                     return info;
+				 } else {
+                     return item;
+                 }
+             }
+
+         } catch {
+             return {error: "Could not delete the item"};
+         }
     }
 
 
@@ -162,6 +187,21 @@ class DataService {
         let IDs = [];
         items.map(item => IDs.push(item._id));
         return IDs;
+    }
+
+    async deleteFromDatabase(item) {
+        try {
+            const info = await item.deleteOne();
+
+            if (info.deletedCount == 1) {
+                return info;
+            } else {
+                return {error: info};
+            }
+
+        } catch {
+            return {error: "Could not delete the item"};
+        }
     }
 
 }

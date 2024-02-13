@@ -151,28 +151,17 @@ app.put('/types/:_id', async (request, response) => {
 
 app.delete('/ingredients/:_id', async (request, response) => {
     try {
-        const ingredient = await Ingredient.findById(request.params._id);
+        const id = request.params._id;
+        const deleted = await DataService.deleteIngredient(id);
 
-        if (ingredient == null) {
-            response.status(500).send({error:"Could not find the ingredient ID"});
-            return;
-        }
-
-        try {
-            const info = await ingredient.deleteOne();
-
-            if(info.deletedCount == 1) {
-                response.status(200).send(ingredient);
-            } else {
-                response.status(500).send({error:info});
-            }
-
-        } catch {
-            response.status(500).send({error:"Could not delete the ingredient"});
+        if(deleted.error) {
+            response.status(500).send(deleted);
+        } else {
+            response.status(200).send(deleted);
         }
 
     } catch {
-        response.status(500).send({error:"Could not find the ingredient ID"});
+        response.status(500).send({error:"Could not delete the ingredient"});
     }
 });
 
@@ -180,29 +169,18 @@ app.delete('/ingredients/:_id', async (request, response) => {
 
 app.delete('/types/:_id', async (request, response) => {
     try {
-        const type = await Type.findById(request.params._id);
+        const id = request.params._id;
+        const deleted = await DataService.deleteType(id);
 
-        if (type == null) {
-            response.status(500).send({error:"Could not find the ID of the type of meal"});
-            return;
+        if(deleted.error) {
+            response.status(500).send(deleted);
+        } else {
+            response.status(200).send(deleted);
         }
-
-        try {
-            const info = await type.deleteOne();
-
-            if(info.deletedCount == 1) {
-                response.status(200).send(type);
-            } else {
-                response.status(500).send({error:info});
-            }
 
         } catch {
             response.status(500).send({error:"Could not delete the type of meal"});
         }
-
-    } catch {
-        response.status(500).send({error:"Could not find the ID of the type of meal"});
-    }
 });
 
 
