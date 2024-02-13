@@ -11,6 +11,7 @@ class DataService {
     }
 
 
+
     //Simple API
     async createIngredient(data) {
         return this.saveItem(null, data, this._Models.ingredient);
@@ -54,7 +55,7 @@ class DataService {
 
 
 
-    //Template methods
+    //Main methods
     async saveItem(id, data, Model) {
         try {
             const item = await this.getItemToSave(id, Model);
@@ -92,15 +93,15 @@ class DataService {
              const items = await Model.find(filter);
 
              if(!Array.isArray(items)) {
-                 return {error:"Could not fetch the array of items matching this filter criteria"};
+                 return {error: "Could not fetch the array of items matching this filter criteria"};
              } else if (!items.length) {
-                 return {error:"There are no items matching this filter criteria"};
+                 return {error: "There are no items matching this filter criteria"};
              } else {
                  return items;
              }
 
          } catch {
-             return {error:"Could not fetch items matching this filter criteria"};
+             return {error: "Could not fetch items matching this filter criteria"};
          }
     }
 
@@ -128,7 +129,21 @@ class DataService {
 
 
 
+
     //Supporting methods
+    async getItemToSave(id, Model) {
+            try {
+                if (!id) {
+                    return this.createItem(Model);
+                } else {
+                    return this.findItemByID(id, Model);
+                }
+            } catch {
+                return {error: "Could not get the item which will be saved"};
+            }
+        }
+
+
     async createItem(Model) {
         try {
             const item = await new Model();
@@ -144,25 +159,18 @@ class DataService {
         }
     }
 
-    async getItemToSave(id, Model) {
-        try {
-            if (!id) {
-                return this.createItem(Model);
-            } else {
-                return this.findItemByID(id, Model);
-            }
-        } catch {
-            return {error: "Could not get the item which will be saved"};
-        }
+
+    getID(item) {
+         return item._id;
     }
 
-    validateItem(data, item) {
-        return this.#Validator.validateItem(data, item);
+
+    getIDs(items) {
+        let IDs = [];
+        items.map(item => IDs.push(item._id));
+        return IDs;
     }
 
-    saveToDatabase(data, item) {
-        return item.saveAs(data);
-    }
 
     async findItemByID(id, Model) {
         try {
@@ -179,15 +187,16 @@ class DataService {
         }
     }
 
-    getID(item) {
-         return item._id;
+
+    validateItem(data, item) {
+        return this.#Validator.validateItem(data, item);
     }
 
-    getIDs(items) {
-        let IDs = [];
-        items.map(item => IDs.push(item._id));
-        return IDs;
+
+    saveToDatabase(data, item) {
+        return item.saveAs(data);
     }
+
 
     async deleteFromDatabase(item) {
         try {
