@@ -64,6 +64,17 @@ app.get('/ingredients', async (request, response) => {
 
 
 
+app.get('/types', async (request, response) => {
+    try {
+        const types = await DataService.getAllTypes();
+        response.status(200).send(types);
+    } catch {
+        response.status(500).send({error:"Could not fetch the types of meals"});
+    }
+});
+
+
+
 app.get('/ingredients/filter', async (request, response) => {
     try {
         const filter = request.body;
@@ -82,17 +93,6 @@ app.get('/ingredients/filter', async (request, response) => {
 
 
 
-app.get('/types', async (request, response) => {
-    try {
-        const types = await DataService.getAllTypes();
-        response.status(200).send(types);
-    } catch {
-        response.status(500).send({error:"Could not fetch the types of meals"});
-    }
-});
-
-
-
 app.get('/types/filter', async (request, response) => {
     try {
         const filter = request.body;
@@ -105,7 +105,7 @@ app.get('/types/filter', async (request, response) => {
         }
 
     } catch {
-        response.status(500).send({error:"Could not fetch meal types matching this filter criteria"});
+        response.status(500).send({error:"Could not fetch types of meals matching this filter criteria"});
     }
 });
 
