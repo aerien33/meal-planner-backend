@@ -128,7 +128,18 @@ class DataService {
     }
 
     async findItemByID(id, Model) {
-        return Model.findById(id);
+        try {
+            const item = await Model.findById(id);
+
+            if (item == null) {
+                return {error: "Could not find any item with this ID"}
+            } else {
+                return item;
+            }
+
+        } catch {
+            return {error: "Could not find any item with this ID"};
+        }
     }
 
     getID(item) {
