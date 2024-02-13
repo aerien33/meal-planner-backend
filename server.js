@@ -67,7 +67,7 @@ app.get('/ingredients', async (request, response) => {
 app.get('/ingredients/filter', async (request, response) => {
     try {
         const filter = request.body;
-        const ingredients = await DataService.findIngredients(filter);
+        const ingredients = await DataService.getIngredients(filter);
 
         if(ingredients.error) {
             response.status(500).send(ingredients);
@@ -96,7 +96,7 @@ app.get('/types', async (request, response) => {
 app.get('/types/filter', async (request, response) => {
     try {
         const filter = request.body;
-        const types = await DataService.findTypes(filter);
+        const types = await DataService.getTypes(filter);
 
         if(types.error) {
             response.status(500).send(types);

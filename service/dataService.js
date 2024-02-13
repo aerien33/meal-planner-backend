@@ -29,12 +29,12 @@ class DataService {
         return this.getAll(this._Models.type);
     }
 
-    async findIngredients(filter) {
-        return this.findItems(filter, this._Models.ingredient);
+    async getIngredients(filter) {
+        return this.getItems(filter, this._Models.ingredient);
     }
 
-    async findTypes(filter) {
-        return this.findItems(filter, this._Models.type);
+    async getTypes(filter) {
+        return this.getItems(filter, this._Models.type);
     }
 
     async updateIngredient(id, data) {
@@ -88,7 +88,7 @@ class DataService {
     }
 
 
-    async findItems(filter, Model) {
+    async getItems(filter, Model) {
          try {
              const items = await Model.find(filter);
 
@@ -108,7 +108,7 @@ class DataService {
 
     async deleteItem(id, Model) {
          try {
-             const item = await this.findItemByID(id, Model);
+             const item = await this.getItemByID(id, Model);
 
              if (item.error) {
                  return item;
@@ -136,7 +136,7 @@ class DataService {
                 if (!id) {
                     return this.createItem(Model);
                 } else {
-                    return this.findItemByID(id, Model);
+                    return this.getItemByID(id, Model);
                 }
             } catch {
                 return {error: "Could not get the item which will be saved"};
@@ -172,7 +172,7 @@ class DataService {
     }
 
 
-    async findItemByID(id, Model) {
+    async getItemByID(id, Model) {
         try {
             const item = await Model.findById(id);
 
