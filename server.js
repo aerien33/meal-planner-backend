@@ -111,6 +111,42 @@ app.get('/types/filter', async (request, response) => {
 
 
 
+app.get('/ingredients/one/filter', async (request, response) => {
+    try {
+        const filter = request.body;
+        const ingredient = await DataService.getOneIngredient(filter);
+
+        if(ingredient.error) {
+            response.status(500).send(ingredient);
+        } else {
+            response.status(200).send(ingredient);
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not fetch any ingredient matching this filter criteria"});
+    }
+});
+
+
+
+app.get('/types/one/filter', async (request, response) => {
+    try {
+        const filter = request.body;
+        const type = await DataService.getOneType(filter);
+
+        if(type.error) {
+            response.status(500).send(type);
+        } else {
+            response.status(200).send(type);
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not fetch any type of meal matching this filter criteria"});
+    }
+});
+
+
+
 app.put('/ingredients/:_id', async (request, response) => {
     try {
         const id = request.params._id;
