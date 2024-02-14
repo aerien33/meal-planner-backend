@@ -147,6 +147,42 @@ app.get('/types/one/filter', async (request, response) => {
 
 
 
+app.get('/ingredients/one/title', async (request, response) => {
+    try {
+        const title = request.body.title;
+        const ingredient = await DataService.getOneIngredientByTitle(title);
+
+        if(ingredient.error) {
+            response.status(500).send(ingredient);
+        } else {
+            response.status(200).send(ingredient);
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not fetch any ingredient with this title"});
+    }
+});
+
+
+
+app.get('/types/one/title', async (request, response) => {
+    try {
+        const title = request.body.title;
+        const type = await DataService.getOneTypeByTitle(title);
+
+        if(type.error) {
+            response.status(500).send(type);
+        } else {
+            response.status(200).send(type);
+        }
+
+    } catch {
+        response.status(500).send({error:"Could not fetch any type of meal with this title"});
+    }
+});
+
+
+
 app.put('/ingredients/:_id', async (request, response) => {
     try {
         const id = request.params._id;

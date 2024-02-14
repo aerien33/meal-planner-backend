@@ -45,6 +45,14 @@ class DataService {
         return this.getItemByFilter(filter, this._Models.type);
     }
 
+    async getOneIngredientByTitle(title) {
+        return this.getItemByTitle(title, this._Models.ingredient);
+    }
+
+    async getOneTypeByTitle(title) {
+        return this.getItemByTitle(title, this._Models.type);
+    }
+
     async updateIngredient(id, data) {
         return this.saveItem(id, data, this._Models.ingredient);
     }
@@ -208,6 +216,22 @@ class DataService {
 
         } catch {
             return {error: "Could not find any item matching this filter criteria"};
+        }
+    }
+
+
+    async getItemByTitle(title, Model) {
+        try {
+            const item = await this.getItemByFilter({"title":title}, Model);
+
+            if (item == null) {
+                return {error: "Could not find any item with this title"};
+            } else {
+                return item;
+            }
+
+        } catch {
+            return {error: "Could not find any item with this title"};
         }
     }
 
