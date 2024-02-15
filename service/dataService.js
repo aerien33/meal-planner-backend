@@ -100,7 +100,7 @@ class DataService {
                 if (valid.error) {
                     return valid;
                 } else {
-                    const saved = this.saveToDatabase(valid, item);
+                    const saved = this.saveToDB(valid, item);
                     return saved;
                 }
             }
@@ -295,7 +295,7 @@ class DataService {
     }
 
 
-    saveToDatabase(data, item) {
+    saveToDB(data, item) {
         return item.saveAs(data);
     }
 
