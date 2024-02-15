@@ -145,7 +145,7 @@ class DataService {
              if (item.error) {
                  return item;
              } else {
-                 const info = await this.deleteFromDatabase(item);
+                 const info = await this.deleteFromDB(item);
 
                  if (info.error) {
                      return info;
@@ -183,7 +183,7 @@ class DataService {
             if (toDelete.error) {
                 return toDelete;
             } else {
-                const info = await this.deleteManyFromDatabase(filter, Model);
+                const info = await this.deleteManyFromDB(filter, Model);
 
                 if (info.error) {
                     return info;
@@ -300,7 +300,7 @@ class DataService {
     }
 
 
-    async deleteFromDatabase(item) {
+    async deleteFromDB(item) {
         try {
             const info = await item.deleteOne();
 
@@ -316,7 +316,7 @@ class DataService {
     }
 
 
-    async deleteManyFromDatabase(filter, Model) {
+    async deleteManyFromDB(filter, Model) {
         try {
             const info = await Model.deleteMany(filter);
 
