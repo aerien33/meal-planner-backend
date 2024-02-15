@@ -69,6 +69,14 @@ class DataService {
         return this.deleteItem(id, this._Models.type);
     }
 
+    async askToDeleteManyIngredients(filter) {
+        return this.askToDeleteMany(filter, this._Models.ingredient);
+    }
+
+    async askToDeleteManyTypes(filter) {
+        return this.askToDeleteMany(filter, this._Models.type);
+    }
+
 
 
     //Main methods
@@ -141,6 +149,22 @@ class DataService {
          } catch {
              return {error: "Could not delete the item"};
          }
+    }
+
+
+    async askToDeleteMany(filter, Model) {
+        try {
+            const toDelete = await this.getItems(filter, Model);
+
+            if (toDelete.error) {
+                return toDelete;
+            } else {
+                return {"warning":"The following items will be deleted", "items":toDelete};
+            }
+
+        } catch {
+            return {error: "Could not send the request to delete the items"};
+        }
     }
 
 

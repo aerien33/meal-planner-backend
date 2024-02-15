@@ -257,6 +257,43 @@ app.delete('/types/:_id', async (request, response) => {
 
 
 
+app.delete('/ingredients', async (request, response) => {
+    try {
+        const filter = request.body;
+        const info = await DataService.askToDeleteManyIngredients(filter);
+
+        if(info.error) {
+            response.status(500).send(info);
+        } else {
+            response.status(200).send(info);
+        }
+
+        } catch {
+            response.status(500).send({error:"Could not request deleting many ingredients"});
+        }
+});
+
+
+
+app.delete('/types', async (request, response) => {
+    try {
+        const filter = request.body;
+        const info = await DataService.askToDeleteManyTypes(filter);
+
+        if(info.error) {
+            response.status(500).send(info);
+        } else {
+            response.status(200).send(info);
+        }
+
+        } catch {
+            response.status(500).send({error:"Could not request deleting many types of meals"});
+        }
+});
+
+
+
+
 app.listen(3004, function() {
     console.log("Meal Planner API running on port 3004...");
 });
