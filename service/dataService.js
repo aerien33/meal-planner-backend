@@ -150,7 +150,7 @@ class DataService {
                  if (info.error) {
                      return info;
 				 } else {
-                     return item;
+                     return {"message":"Deleted the following items", "items":[item]};
                  }
              }
 
