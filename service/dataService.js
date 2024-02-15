@@ -1,5 +1,5 @@
 
-// Abstract Class
+
 class DataService {
 
     _Models;
@@ -75,6 +75,14 @@ class DataService {
 
     async askToDeleteManyTypes(filter) {
         return this.askToDeleteMany(filter, this._Models.type);
+    }
+
+    async deleteManyIngredients(filter) {
+        return this.deleteMany(filter, this._Models.ingredient);
+    }
+
+    async deleteManyTypes(filter) {
+        return this.deleteMany(filter, this._Models.type);
     }
 
 
@@ -160,6 +168,28 @@ class DataService {
                 return toDelete;
             } else {
                 return {"warning":"The following items will be deleted", "items":toDelete};
+            }
+
+        } catch {
+            return {error: "Could not send the request to delete the items"};
+        }
+    }
+
+
+    async deleteMany(filter, Model) {
+        try {
+            const toDelete = await this.getItems(filter, Model);
+
+            if (toDelete.error) {
+                return toDelete;
+            } else {
+                const info = await this.deleteManyFromDatabase(filter, Model);
+
+                if (info.error) {
+                    return info;
+                } else {
+                    return {"message":"Deleted the following items", "items":toDelete};
+                }
             }
 
         } catch {
@@ -282,6 +312,22 @@ class DataService {
 
         } catch {
             return {error: "Could not delete the item"};
+        }
+    }
+
+
+    async deleteManyFromDatabase(filter, Model) {
+        try {
+            const info = await Model.deleteMany(filter);
+
+            if (!info.deletedCount || info.deletedCount < 1) {
+                return {error: info};
+            } else {
+                return info;
+            }
+
+        } catch {
+            return {error: "Could not delete the items"};
         }
     }
 

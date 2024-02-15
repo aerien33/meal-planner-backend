@@ -221,7 +221,7 @@ app.put('/types/:_id', async (request, response) => {
 
 
 
-app.delete('/ingredients/:_id', async (request, response) => {
+app.delete('/ingredients/one/:_id', async (request, response) => {
     try {
         const id = request.params._id;
         const deleted = await DataService.deleteIngredient(id);
@@ -239,7 +239,7 @@ app.delete('/ingredients/:_id', async (request, response) => {
 
 
 
-app.delete('/types/:_id', async (request, response) => {
+app.delete('/types/one/:_id', async (request, response) => {
     try {
         const id = request.params._id;
         const deleted = await DataService.deleteType(id);
@@ -288,6 +288,42 @@ app.delete('/types', async (request, response) => {
 
         } catch {
             response.status(500).send({error:"Could not request deleting many types of meals"});
+        }
+});
+
+
+
+app.delete('/ingredients/ok', async (request, response) => {
+    try {
+        const filter = request.body;
+        const info = await DataService.deleteManyIngredients(filter);
+
+        if(info.error) {
+            response.status(500).send(info);
+        } else {
+            response.status(200).send(info);
+        }
+
+        } catch {
+            response.status(500).send({error:"Could not delete the ingredients"});
+        }
+});
+
+
+
+app.delete('/types/ok', async (request, response) => {
+    try {
+        const filter = request.body;
+        const info = await DataService.deleteManyTypes(filter);
+
+        if(info.error) {
+            response.status(500).send(info);
+        } else {
+            response.status(200).send(info);
+        }
+
+        } catch {
+            response.status(500).send({error:"Could not delete the types of meals"});
         }
 });
 
