@@ -17,16 +17,23 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 
 
+function setStatus(obj, response) {
+    if (obj.error) {
+        response.status(500);
+    } else {
+        response.status(200);
+    }
+}
+
+
+
 app.post('/ingredients', async (request, response) => {
     try {
         const data = request.body;
         const saved = await DataService.createIngredient(data);
 
-        if(saved.error) {
-            response.status(500).send(saved);
-        } else {
-            response.status(200).send(saved);
-        }
+        setStatus(saved, response);
+        response.send(saved);
 
     } catch {
         response.status(500).send({error:"Could not save the ingredient"});
@@ -40,11 +47,8 @@ app.post('/types', async (request, response) => {
         const data = request.body;
         const saved = await DataService.createType(data);
 
-        if(saved.error) {
-            response.status(500).send(saved);
-        } else {
-            response.status(200).send(saved);
-        }
+        setStatus(saved, response);
+        response.send(saved);
 
     } catch {
         response.status(500).send({error:"Could not save the type of meal"});
@@ -56,7 +60,10 @@ app.post('/types', async (request, response) => {
 app.get('/ingredients', async (request, response) => {
     try {
         const ingredients = await DataService.getAllIngredients();
-        response.status(200).send(ingredients);
+
+        setStatus(ingredients, response);
+        response.send(ingredients);
+
     } catch {
         response.status(500).send({error:"Could not fetch the ingredients"});
     }
@@ -67,7 +74,10 @@ app.get('/ingredients', async (request, response) => {
 app.get('/types', async (request, response) => {
     try {
         const types = await DataService.getAllTypes();
-        response.status(200).send(types);
+
+        setStatus(types, response);
+        response.send(types);
+
     } catch {
         response.status(500).send({error:"Could not fetch the types of meals"});
     }
@@ -80,11 +90,8 @@ app.get('/ingredients/filter', async (request, response) => {
         const filter = request.body;
         const ingredients = await DataService.getIngredients(filter);
 
-        if(ingredients.error) {
-            response.status(500).send(ingredients);
-        } else {
-            response.status(200).send(ingredients);
-        }
+        setStatus(ingredients, response);
+        response.send(ingredients);
 
     } catch {
         response.status(500).send({error:"Could not fetch ingredients matching this filter criteria"});
@@ -98,11 +105,8 @@ app.get('/types/filter', async (request, response) => {
         const filter = request.body;
         const types = await DataService.getTypes(filter);
 
-        if(types.error) {
-            response.status(500).send(types);
-        } else {
-            response.status(200).send(types);
-        }
+        setStatus(types, response);
+        response.send(types);
 
     } catch {
         response.status(500).send({error:"Could not fetch types of meals matching this filter criteria"});
@@ -116,11 +120,8 @@ app.get('/ingredients/one/filter', async (request, response) => {
         const filter = request.body;
         const ingredient = await DataService.getOneIngredient(filter);
 
-        if(ingredient.error) {
-            response.status(500).send(ingredient);
-        } else {
-            response.status(200).send(ingredient);
-        }
+        setStatus(ingredient, response);
+        response.send(ingredient);
 
     } catch {
         response.status(500).send({error:"Could not fetch any ingredient matching this filter criteria"});
@@ -134,11 +135,8 @@ app.get('/types/one/filter', async (request, response) => {
         const filter = request.body;
         const type = await DataService.getOneType(filter);
 
-        if(type.error) {
-            response.status(500).send(type);
-        } else {
-            response.status(200).send(type);
-        }
+        setStatus(type, response);
+        response.send(type);
 
     } catch {
         response.status(500).send({error:"Could not fetch any type of meal matching this filter criteria"});
@@ -152,11 +150,8 @@ app.get('/ingredients/one/title', async (request, response) => {
         const title = request.body.title;
         const ingredient = await DataService.getOneIngredientByTitle(title);
 
-        if(ingredient.error) {
-            response.status(500).send(ingredient);
-        } else {
-            response.status(200).send(ingredient);
-        }
+        setStatus(ingredient, response);
+        response.send(ingredient);
 
     } catch {
         response.status(500).send({error:"Could not fetch any ingredient with this title"});
@@ -170,11 +165,8 @@ app.get('/types/one/title', async (request, response) => {
         const title = request.body.title;
         const type = await DataService.getOneTypeByTitle(title);
 
-        if(type.error) {
-            response.status(500).send(type);
-        } else {
-            response.status(200).send(type);
-        }
+        setStatus(type, response);
+        response.send(type);
 
     } catch {
         response.status(500).send({error:"Could not fetch any type of meal with this title"});
@@ -189,11 +181,8 @@ app.put('/ingredients/:_id', async (request, response) => {
         const update = request.body;
         const saved = await DataService.updateIngredient(id, update);
 
-        if(saved.error) {
-            response.status(500).send(saved);
-        } else {
-            response.status(200).send(saved);
-        }
+        setStatus(saved, response);
+        response.send(saved);
 
     } catch {
         response.status(500).send({error:"Could not update the ingredient"});
@@ -208,11 +197,8 @@ app.put('/types/:_id', async (request, response) => {
         const update = request.body;
         const saved = await DataService.updateType(id, update);
 
-        if(saved.error) {
-            response.status(500).send(saved);
-        } else {
-            response.status(200).send(saved);
-        }
+        setStatus(saved, response);
+        response.send(saved);
 
     } catch {
         response.status(500).send({error:"Could not update the type of meal"});
@@ -226,11 +212,8 @@ app.delete('/ingredients/one/:_id', async (request, response) => {
         const id = request.params._id;
         const deleted = await DataService.deleteIngredient(id);
 
-        if(deleted.error) {
-            response.status(500).send(deleted);
-        } else {
-            response.status(200).send(deleted);
-        }
+        setStatus(deleted, response);
+        response.send(deleted);
 
     } catch {
         response.status(500).send({error:"Could not delete the ingredient"});
@@ -244,11 +227,8 @@ app.delete('/types/one/:_id', async (request, response) => {
         const id = request.params._id;
         const deleted = await DataService.deleteType(id);
 
-        if(deleted.error) {
-            response.status(500).send(deleted);
-        } else {
-            response.status(200).send(deleted);
-        }
+        setStatus(deleted, response);
+        response.send(deleted);
 
         } catch {
             response.status(500).send({error:"Could not delete the type of meal"});
@@ -262,11 +242,8 @@ app.delete('/ingredients', async (request, response) => {
         const filter = request.body;
         const info = await DataService.askToDeleteManyIngredients(filter);
 
-        if(info.error) {
-            response.status(500).send(info);
-        } else {
-            response.status(200).send(info);
-        }
+        setStatus(info, response);
+        response.send(info);
 
         } catch {
             response.status(500).send({error:"Could not request deleting many ingredients"});
@@ -280,11 +257,8 @@ app.delete('/types', async (request, response) => {
         const filter = request.body;
         const info = await DataService.askToDeleteManyTypes(filter);
 
-        if(info.error) {
-            response.status(500).send(info);
-        } else {
-            response.status(200).send(info);
-        }
+        setStatus(info, response);
+        response.send(info);
 
         } catch {
             response.status(500).send({error:"Could not request deleting many types of meals"});
@@ -298,11 +272,8 @@ app.delete('/ingredients/ok', async (request, response) => {
         const filter = request.body;
         const info = await DataService.deleteManyIngredients(filter);
 
-        if(info.error) {
-            response.status(500).send(info);
-        } else {
-            response.status(200).send(info);
-        }
+        setStatus(info, response);
+        response.send(info);
 
         } catch {
             response.status(500).send({error:"Could not delete the ingredients"});
@@ -316,11 +287,8 @@ app.delete('/types/ok', async (request, response) => {
         const filter = request.body;
         const info = await DataService.deleteManyTypes(filter);
 
-        if(info.error) {
-            response.status(500).send(info);
-        } else {
-            response.status(200).send(info);
-        }
+        setStatus(info, response);
+        response.send(info);
 
         } catch {
             response.status(500).send({error:"Could not delete the types of meals"});
