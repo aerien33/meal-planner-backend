@@ -7,7 +7,7 @@ class jsonValidator {
         this.#Models = Models;
     }
 
-    validateItem(data, item) {
+    validateFormat(data, item) {
         if (item instanceof this.#Models.ingredient) {
             return this.#validateIngredient(data);
         } else if (item instanceof this.#Models.type) {

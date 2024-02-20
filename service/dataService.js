@@ -95,7 +95,7 @@ class DataService {
             if (item.error) {
                 return item;
             } else {
-                const valid = this.validateItem(data, item);
+                const valid = this.validateFormat(data, item);
 
                 if (valid.error) {
                     return valid;
@@ -290,8 +290,8 @@ class DataService {
     }
 
 
-    validateItem(data, item) {
-        return this.#Validator.validateItem(data, item);
+    validateFormat(data, item) {
+        return this.#Validator.validateFormat(data, item);
     }
 
 
