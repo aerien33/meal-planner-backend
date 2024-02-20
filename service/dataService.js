@@ -100,7 +100,7 @@ class DataService {
                 if (valid.error) {
                     return valid;
                 } else {
-                    const saved = this.saveToDB(valid, item);
+                    const saved = await this.saveToDB(valid, item);
                     return saved;
                 }
             }
@@ -202,16 +202,16 @@ class DataService {
 
     //Supporting methods
     async getItemToSave(id, Model) {
-            try {
-                if (!id) {
-                    return this.createItem(Model);
-                } else {
-                    return this.getItemByID(id, Model);
-                }
-            } catch {
-                return {error: "Could not get the item which will be saved"};
+        try {
+            if (!id) {
+                return this.createItem(Model);
+            } else {
+                return this.getItemByID(id, Model);
             }
+        } catch {
+            return {error: "Could not get the item which will be saved"};
         }
+    }
 
 
     async createItem(Model) {
@@ -295,8 +295,8 @@ class DataService {
     }
 
 
-    saveToDB(data, item) {
-        return item.saveAs(data);
+    async saveToDB(data, item) {
+        return await item.saveAs(data);
     }
 
 
