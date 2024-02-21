@@ -12,6 +12,8 @@ class jsonValidator {
             return this.#validateIngredient(data);
         } else if (item instanceof this.#Models.type) {
             return this.#validateType(data);
+        } else if (item instanceof this.#Models.meal) {
+            return this.#validateMeal(data);
         } else {
             return {error:"Validation of this model is not supported"};
         }
@@ -35,6 +37,34 @@ class jsonValidator {
         } else if (!data.defaultOrder || typeof data.defaultOrder !== 'number') {
             return {error:"Please provide default order of this type of meal as a number"};
         } else {
+            return data;
+        }
+    }
+
+    #validateMeal(data) {
+        if (!data.title || data.title === "") {
+            return {error:"Please provide the title of the meal"};
+        } else if (!data.ingredients || !Array.isArray(data.ingredients) || data.ingredients.length == 0) {
+            return {error:"Please provide the ingredients in an array"};
+        } else if (!data.recipe || !Array.isArray(data.recipe) || data.recipe.length == 0) {
+            return {error:"Please provide the recipe in an array of strings"};
+        } else if (!data.typeTitle || data.typeTitle === "") {
+            return {error:"Please provide the title of the type of meal"};
+        } else {
+
+            for (const ing of data.ingredients) {
+                const ingredient = this.#validateIngredient(ing);
+                if (ingredient.error) {
+                    return ingredient;
+                }
+            }
+
+            for (const step of data.recipe) {
+                if (typeof step !== 'string') {
+                    return {error:"Please provide the recipe in an array of strings"};
+                }
+            }
+
             return data;
         }
     }
