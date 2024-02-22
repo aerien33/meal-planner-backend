@@ -8,7 +8,7 @@ var allModels = require('./model/allModels');
 var jsonValidator = require('./service/jsonValidator');
 var dataService = require('./service/dataService');
 
-var Models = new allModels();
+const Models = new allModels();
 const Validator = new jsonValidator(Models);
 const DataService = new dataService(Models, Validator);
 
@@ -52,6 +52,21 @@ app.post('/types', async (request, response) => {
 
     } catch {
         response.status(500).send({error:"Could not save the type of meal"});
+    }
+});
+
+
+
+app.post('/meals', async (request, response) => {
+    try {
+        const data = request.body;
+        const saved = await DataService.createMeal(data);
+
+        setStatus(saved, response);
+        response.send(saved);
+
+    } catch {
+        response.status(500).send({error:"Could not save the meal"});
     }
 });
 

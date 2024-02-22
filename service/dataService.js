@@ -21,6 +21,10 @@ class DataService {
         return this.saveItem(null, data, this._Models.type);
     }
 
+    async createMeal(data) {
+        return this.saveItem(null, data, this._Models.meal);
+    }
+
     async getAllIngredients() {
         return this.getAll(this._Models.ingredient);
     }
@@ -100,8 +104,14 @@ class DataService {
                 if (valid.error) {
                     return valid;
                 } else {
-                    const saved = await this.saveToDB(valid, item);
-                    return saved;
+                    const mapped = await this.mapToItem(valid, item);
+
+                    if (mapped.error) {
+                        return mapped;
+                    } else {
+                        const saved = await this.saveToDB(mapped, item);
+                        return saved;
+                    }
                 }
             }
 
@@ -336,6 +346,63 @@ class DataService {
         } catch {
             return {error: "Could not delete the items"};
         }
+    }
+
+
+    async mapToItem(data, item) {
+        try {
+            if (item instanceof this._Models.meal) {
+                return this.mapToMeal(data);
+            } else {
+                return data;
+            }
+        } catch {
+            return {error: "Could not map the data to an given item"};
+        }
+    }
+
+
+    async mapToMeal(data) {
+        try {
+            const meal = await this.createItem(this._Models.meal);
+            meal.title = data.title;
+
+            var ingredientIDs = [];
+            for (const ing of data.ingredients) {
+                let ingredient = await this.getItemToSaveByFilter(ing, this._Models.ingredient);
+                if (ingredient.error) {
+                    return ingredient;
+                } else if (!ingredient.title) {
+                    const saved = this.saveItem(ingredient._id, ing, this._Models.ingredient);
+                    ingredientIDs.push(saved._id);
+                } else {
+                    ingredientIDs.push(ingredient._id);
+                }
+            }
+
+            meal.ingredients = ingredientIDs;
+
+            meal.recipe = data.recipe;
+
+            const type = await this.getItemByTitle(data.typeTitle, this._Models.type);
+            if (type.error) {
+                return type;
+            } else {
+                meal.type = type._id;
+            }
+
+            if (!data.currentOrder) {
+                meal.currentOrder = type.defaultOrder;
+            } else {
+                meal.currentOrder = data.currentOrder;
+            }
+
+            return meal;
+
+        } catch {
+            return {error: "Could not map the data to a meal"};
+        }
+
     }
 
 }
