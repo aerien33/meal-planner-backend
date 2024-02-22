@@ -90,7 +90,7 @@ class DataService {
     //Main methods
     async saveItem(id, data, Model) {
         try {
-            const item = await this.getItemToSave(id, Model);
+            const item = await this.getItemToSaveByID(id, Model);
 
             if (item.error) {
                 return item;
@@ -201,13 +201,20 @@ class DataService {
 
 
     //Supporting methods
-    async getItemToSave(id, Model) {
+    async getItemToSaveByID(id, Model) {
+        return this.getItemToSave({"_id":id}, Model);
+    }
+
+
+     async getItemToSave(filter, Model) {
         try {
-            if (!id) {
-                return this.createItem(Model);
-            } else {
-                return this.getItemByID(id, Model);
+            let item = await this.getItemByFilter(filter, Model);
+            if (item.error) {
+                item = await this.createItem(Model);
             }
+
+            return item;
+
         } catch {
             return {error: "Could not get the item which will be saved"};
         }
