@@ -49,7 +49,7 @@ class jsonValidator {
         } else if (!data.recipe || !Array.isArray(data.recipe) || data.recipe.length == 0) {
             return {error:"Please provide the recipe in an array of strings"};
         } else if (!data.typeTitle || data.typeTitle === "") {
-            return {error:"Please provide the title of the type of meal"};
+            return {error:"Please provide the title of the type of meal as 'typeTitle'"};
         } else {
 
             for (const ing of data.ingredients) {
