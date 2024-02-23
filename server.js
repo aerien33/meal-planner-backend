@@ -100,6 +100,20 @@ app.get('/types', async (request, response) => {
 
 
 
+app.get('/meals', async (request, response) => {
+    try {
+        const meals = await DataService.getAllMeals();
+
+        setStatus(meals, response);
+        response.send(meals);
+
+    } catch {
+        response.status(500).send({error:"Could not fetch the meals"});
+    }
+});
+
+
+
 app.get('/ingredients/filter', async (request, response) => {
     try {
         const filter = request.body;

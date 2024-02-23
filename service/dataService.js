@@ -33,6 +33,12 @@ class DataService {
         return this.getAll(this._Models.type);
     }
 
+    async getAllMeals() {
+        return this._Models.meal.find({}, '-__v')
+            .populate({path:'ingredients', model:'Ingredient', select:'-__v'})
+            .populate({path:'type', model:'Type', select:'-__v'});
+    }
+
     async getIngredients(filter) {
         return this.getItems(filter, this._Models.ingredient);
     }
