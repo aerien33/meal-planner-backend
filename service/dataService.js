@@ -129,7 +129,7 @@ class DataService {
 
     async getAll(Model) {
         try {
-            return Model.find();
+            return Model.find({}, '-__v');
         } catch {
             return {error: "Could not fetch the items"};
         }
@@ -267,7 +267,7 @@ class DataService {
 
     async getItemByID(id, Model) {
         try {
-            const item = await Model.findById(id);
+            const item = await Model.findById(id, '-__v');
 
             if (item == null) {
                 return {error: "Could not find any item with this ID"}
@@ -283,7 +283,7 @@ class DataService {
 
     async getItemByFilter(filter, Model) {
         try {
-            const item = await Model.findOne(filter);
+            const item = await Model.findOne(filter, '-__v');
 
             if (item == null) {
                 return {error: "Could not find any item matching this filter criteria"}
