@@ -5,14 +5,21 @@ var Mapper = require('./mapper');
 
 class DataService {
 
+    static instance;
+
     _Models;
     #Validator;
     #Mapper;
 
     constructor() {
-        this._Models = new Models();
-        this.#Validator = new Validator(this._Models);
-        this.#Mapper = new Mapper(this._Models, this);
+        if (this.constructor.instance) {
+           return this.constructor.instance;
+       } else {
+           this._Models = new Models();
+           this.#Validator = new Validator(this._Models);
+           this.#Mapper = new Mapper(this._Models, this);
+           this.constructor.instance = this;
+       }
     }
 
 
