@@ -1,4 +1,6 @@
 
+var Models = require('../model/allModels');
+var Validator = require('./jsonValidator');
 var Mapper = require('./mapper');
 
 class DataService {
@@ -7,9 +9,9 @@ class DataService {
     #Validator;
     #Mapper;
 
-    constructor(Models, Validator) {
-        this._Models = Models;
-        this.#Validator = Validator;
+    constructor() {
+        this._Models = new Models();
+        this.#Validator = new Validator(this._Models);
         this.#Mapper = new Mapper(this._Models, this);
     }
 

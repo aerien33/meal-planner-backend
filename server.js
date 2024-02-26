@@ -4,13 +4,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 
-var allModels = require('./model/allModels');
-var jsonValidator = require('./service/jsonValidator');
 var dataService = require('./service/dataService');
-
-const Models = new allModels();
-const Validator = new jsonValidator(Models);
-const DataService = new dataService(Models, Validator);
+const DataService = new dataService();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
