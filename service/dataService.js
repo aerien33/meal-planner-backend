@@ -1,13 +1,16 @@
 
+var Mapper = require('./mapper');
 
 class DataService {
 
     _Models;
     #Validator;
+    #Mapper;
 
     constructor(Models, Validator) {
         this._Models = Models;
         this.#Validator = Validator;
+        this.#Mapper = new Mapper(this._Models, this);
     }
 
 
@@ -110,7 +113,7 @@ class DataService {
                 if (valid.error) {
                     return valid;
                 } else {
-                    const mapped = await this.mapToItem(valid, item);
+                    const mapped = await this.#Mapper.mapToItem(valid, item);
 
                     if (mapped.error) {
                         return mapped;
@@ -352,63 +355,6 @@ class DataService {
         } catch {
             return {error: "Could not delete the items"};
         }
-    }
-
-
-    async mapToItem(data, item) {
-        try {
-            if (item instanceof this._Models.meal) {
-                return this.mapToMeal(data);
-            } else {
-                return data;
-            }
-        } catch {
-            return {error: "Could not map the data to an given item"};
-        }
-    }
-
-
-    async mapToMeal(data) {
-        try {
-            const meal = await this.createItem(this._Models.meal);
-            meal.title = data.title;
-
-            var ingredientIDs = [];
-            for (const ing of data.ingredients) {
-                let ingredient = await this.getItemToSaveByFilter(ing, this._Models.ingredient);
-                if (ingredient.error) {
-                    return ingredient;
-                } else if (!ingredient.title) {
-                    const saved = this.saveItem(ingredient._id, ing, this._Models.ingredient);
-                    ingredientIDs.push(saved._id);
-                } else {
-                    ingredientIDs.push(ingredient._id);
-                }
-            }
-
-            meal.ingredients = ingredientIDs;
-
-            meal.recipe = data.recipe;
-
-            const type = await this.getItemByTitle(data.typeTitle, this._Models.type);
-            if (type.error) {
-                return type;
-            } else {
-                meal.type = type._id;
-            }
-
-            if (!data.currentOrder) {
-                meal.currentOrder = type.defaultOrder;
-            } else {
-                meal.currentOrder = data.currentOrder;
-            }
-
-            return meal;
-
-        } catch {
-            return {error: "Could not map the data to a meal"};
-        }
-
     }
 
 }
