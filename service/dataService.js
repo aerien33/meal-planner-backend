@@ -26,10 +26,10 @@ class DataService {
     //Main methods
     async saveItem(id, data, Model) {
         try {
-            const item = await this.getItemToSaveByID(id, Model);
+            const toSave = await this.getItemToSaveByID(id, Model);
 
-            if (item.error) {
-                return item;
+            if (toSave.error) {
+                return toSave;
             } else {
                 const dto = this.#Validator.validateFormat(data, Model);
 
@@ -41,7 +41,7 @@ class DataService {
                     if (entity.error) {
                         return entity;
                     } else {
-                        const saved = await Model.saveToDB(entity, item);
+                        const saved = await Model.saveToDB(entity, toSave);
                         return saved;
                     }
                 }
