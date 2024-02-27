@@ -10,9 +10,9 @@ class Mapper {
     }
 
 
-    async mapToItem(data, item) {
+    async mapToEntity(data, Model) {
         try {
-            if (item instanceof this.#Models.meal) {
+            if (Model === this.#Models.meal) {
                 return this.mapToMeal(data);
             } else {
                 return data;

@@ -36,12 +36,12 @@ class DataService {
                 if (dto.error) {
                     return dto;
                 } else {
-                    const mapped = await this.#Mapper.mapToItem(valid, item);
+                    const entity = await this.#Mapper.mapToEntity(dto, Model);
 
-                    if (mapped.error) {
-                        return mapped;
+                    if (entity.error) {
+                        return entity;
                     } else {
-                        const saved = await Model.saveToDB(mapped, item);
+                        const saved = await Model.saveToDB(entity, item);
                         return saved;
                     }
                 }
