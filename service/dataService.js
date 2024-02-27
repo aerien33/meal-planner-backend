@@ -31,10 +31,10 @@ class DataService {
             if (item.error) {
                 return item;
             } else {
-                const valid = this.validateFormat(data, item);
+                const dto = this.#Validator.validateFormat(data, Model);
 
-                if (valid.error) {
-                    return valid;
+                if (dto.error) {
+                    return dto;
                 } else {
                     const mapped = await this.#Mapper.mapToItem(valid, item);
 
@@ -236,11 +236,6 @@ class DataService {
         } catch {
             return {error: "Could not find any item with this title"};
         }
-    }
-
-
-    validateFormat(data, item) {
-        return this.#Validator.validateFormat(data, item);
     }
 
 

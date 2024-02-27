@@ -7,12 +7,12 @@ class jsonValidator {
         this.#Models = Models;
     }
 
-    validateFormat(data, item) {
-        if (item instanceof this.#Models.ingredient) {
+    validateFormat(data, Model) {
+        if (Model === this.#Models.ingredient) {
             return this.#validateIngredient(data);
-        } else if (item instanceof this.#Models.type) {
+        } else if (Model === this.#Models.type) {
             return this.#validateType(data);
-        } else if (item instanceof this.#Models.meal) {
+        } else if (Model === this.#Models.meal) {
             return this.#validateMeal(data);
         } else {
             return {error:"Validation of this model is not supported"};
