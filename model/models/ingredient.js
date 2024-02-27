@@ -7,7 +7,7 @@ var ingredient = new Schema({
     unit: {type: String, required: true}
 });
 
-ingredient.statics.saveAs = function(data, item) {
+ingredient.statics.saveToDB = function(data, item) {
     
     item.title = data.title;
     

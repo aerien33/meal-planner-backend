@@ -29,7 +29,7 @@ meal.statics.isTitleUnique = async function(title) {
     }
 }
 
-meal.statics.saveAs = async function(data, item) {
+meal.statics.saveToDB = async function(data, item) {
 
     const unique = await this.isTitleUnique(data.title);
     if (unique == false) {

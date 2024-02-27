@@ -41,7 +41,7 @@ class DataService {
                     if (mapped.error) {
                         return mapped;
                     } else {
-                        const saved = await this.saveToDB(mapped, item);
+                        const saved = await Model.saveToDB(mapped, item);
                         return saved;
                     }
                 }
@@ -241,11 +241,6 @@ class DataService {
 
     validateFormat(data, item) {
         return this.#Validator.validateFormat(data, item);
-    }
-
-
-    async saveToDB(data, item) {
-        return await item.saveAs(data);
     }
 
 
