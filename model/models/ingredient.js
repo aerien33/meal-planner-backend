@@ -7,20 +7,20 @@ var ingredient = new Schema({
     unit: {type: String, required: true}
 });
 
-ingredient.methods.saveAs = function(data) {
+ingredient.statics.saveAs = function(data, item) {
     
-    this.title = data.title;
+    item.title = data.title;
     
     if (data.quantity < 0.01) {
         return {error:"Quantity needs to be at least 0.01"};
     } else {
-        this.quantity = data.quantity;
+        item.quantity = data.quantity;
     }
     
-    this.unit = data.unit;
+    item.unit = data.unit;
     
-    this.save();
-    return this;
+    item.save();
+    return item;
 };
 
 module.exports = mongoose.model('Ingredient', ingredient);

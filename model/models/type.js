@@ -18,23 +18,23 @@ type.statics.isTitleUnique = async function(title) {
     }
 }
 
-type.methods.saveAs = async function(data) {
+type.statics.saveAs = async function(data, item) {
 
-    const unique = await this.constructor.isTitleUnique(data.title);
+    const unique = await this.isTitleUnique(data.title);
     if (unique == false) {
         return {error:"There is already a type with this title"};
     } else {
-        this.title = data.title;
+        item.title = data.title;
     }
 
     if (data.defaultOrder < 1) {
         return {error:"Default order needs to be at least 1"};
     } else {
-        this.defaultOrder = data.defaultOrder;
+        item.defaultOrder = data.defaultOrder;
     }
 
-    this.save();
-    return this;
+    item.save();
+    return item;
 };
 
 module.exports = mongoose.model('Type', type);
