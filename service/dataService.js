@@ -1,7 +1,7 @@
 
 var Models = require('../model/allModels');
-var Validator = require('./jsonValidator');
-var Mapper = require('./mapper');
+var Validator = require('../dto_validation/jsonValidator');
+var Mapper = require('../mapper/mapper');
 
 class DataService {
 

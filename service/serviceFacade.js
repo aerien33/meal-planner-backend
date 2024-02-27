@@ -1,5 +1,5 @@
 var Models = require('../model/allModels');
-var DataService = require('./dataService');
+var DataService = require('../service/dataService');
 
 class ServiceFacade {
 

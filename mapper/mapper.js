@@ -63,7 +63,6 @@ class Mapper {
         } catch {
             return {error: "Could not map the data to a meal"};
         }
-
     }
 
 }

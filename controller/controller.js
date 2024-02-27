@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/meal-planner-test');
 
-var serviceFacade = require('./service/serviceFacade');
+var serviceFacade = require('../service/serviceFacade');
 const Service = new serviceFacade();
 
 app.use(bodyParser.json());
