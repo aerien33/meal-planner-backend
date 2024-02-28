@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
+var model = require('../model');
 
 var meal = new Schema({
     title: {type: String, required: true, unique: true},
@@ -17,6 +18,8 @@ var meal = new Schema({
     currentOrder: {type: Number, min: 1, required: true}
 });
 
+meal.plugin(model);
+
 
 
 meal.statics.isTitleUnique = async function(title) {
@@ -28,6 +31,7 @@ meal.statics.isTitleUnique = async function(title) {
         return true;
     }
 }
+
 
 meal.statics.saveToDB = async function(data, item) {
 
@@ -61,5 +65,6 @@ meal.statics.saveToDB = async function(data, item) {
     item.save();
     return item;
 };
+
 
 module.exports = mongoose.model('Meal', meal);

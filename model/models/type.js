@@ -1,12 +1,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
+var model = require('../model');
 
 //Type of meal, such as breakfast, lunch, dinner etc.
 var type = new Schema({
     title: {type: String, required: true, unique: true},
     defaultOrder: {type: Number, min: 1, required: true}
 });
+
+type.plugin(model);
+
+
 
 type.statics.isTitleUnique = async function(title) {
     const item = await this.findOne({"title":title});
@@ -17,6 +22,7 @@ type.statics.isTitleUnique = async function(title) {
         return true;
     }
 }
+
 
 type.statics.saveToDB = async function(data, item) {
 
@@ -36,5 +42,6 @@ type.statics.saveToDB = async function(data, item) {
     item.save();
     return item;
 };
+
 
 module.exports = mongoose.model('Type', type);

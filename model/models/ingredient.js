@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var model = require('../model');
 
 var ingredient = new Schema({
     title: {type: String, required: true},
@@ -7,7 +8,11 @@ var ingredient = new Schema({
     unit: {type: String, required: true}
 });
 
-ingredient.statics.saveToDB = function(data, item) {
+ingredient.plugin(model);
+
+
+
+ingredient.statics.saveToDB = async function(data, item) {
     
     item.title = data.title;
     
@@ -22,5 +27,6 @@ ingredient.statics.saveToDB = function(data, item) {
     item.save();
     return item;
 };
+
 
 module.exports = mongoose.model('Ingredient', ingredient);
