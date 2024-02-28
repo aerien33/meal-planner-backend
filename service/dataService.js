@@ -87,7 +87,7 @@ class DataService {
              if (item.error) {
                  return item;
              } else {
-                 const info = await this.deleteFromDB(item);
+                 const info = await Model.deleteFromDB(item);
 
                  if (info.error) {
                      return info;
@@ -125,7 +125,7 @@ class DataService {
             if (toDelete.error) {
                 return toDelete;
             } else {
-                const info = await this.deleteManyFromDB(filter, Model);
+                const info = await Model.deleteManyFromDB(filter);
 
                 if (info.error) {
                     return info;
@@ -235,38 +235,6 @@ class DataService {
 
         } catch {
             return {error: "Could not find any item with this title"};
-        }
-    }
-
-
-    async deleteFromDB(item) {
-        try {
-            const info = await item.deleteOne();
-
-            if (info.deletedCount == 1) {
-                return info;
-            } else {
-                return {error: info};
-            }
-
-        } catch {
-            return {error: "Could not delete the item"};
-        }
-    }
-
-
-    async deleteManyFromDB(filter, Model) {
-        try {
-            const info = await Model.deleteMany(filter);
-
-            if (!info.deletedCount || info.deletedCount < 1) {
-                return {error: info};
-            } else {
-                return info;
-            }
-
-        } catch {
-            return {error: "Could not delete the items"};
         }
     }
 
