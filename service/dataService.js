@@ -55,7 +55,7 @@ class DataService {
 
     async getAll(Model) {
         try {
-            return Model.find({}, '-__v');
+            return this.getItems({}, Model);
         } catch {
             return {error: "Could not fetch the items"};
         }
@@ -64,9 +64,9 @@ class DataService {
 
     async getItems(filter, Model) {
          try {
-             const items = await Model.find(filter);
+             const items = await Model.find(filter, '-__v');
 
-             if(!Array.isArray(items)) {
+             if (!Array.isArray(items)) {
                  return {error: "Could not fetch the array of items matching this filter criteria"};
              } else if (!items.length) {
                  return {error: "There are no items matching this filter criteria"};
