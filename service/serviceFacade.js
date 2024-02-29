@@ -102,6 +102,18 @@ class ServiceFacade {
         return this.#Service.deleteMany(filter, this.#Models.type);
     }
 
+    async deleteAllIngredients() {
+        return this.#Service.deleteMany({}, this.#Models.ingredient);
+    }
+
+    async deleteAllTypes() {
+        return this.#Service.deleteMany({}, this.#Models.type);
+    }
+
+    async deleteAllMeals() {
+        return this.#Service.deleteMany({}, this.#Models.meal);
+    }
+
 }
 
 module.exports = ServiceFacade;
