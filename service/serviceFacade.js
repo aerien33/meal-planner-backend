@@ -86,12 +86,12 @@ class ServiceFacade {
         return this.#Service.deleteItem(id, this.#Models.type);
     }
 
-    async askToDeleteManyIngredients(filter) {
-        return this.#Service.askToDeleteMany(filter, this.#Models.ingredient);
+    async requestDeleteManyIng(filter) {
+        return this.#Service.requestDeleteMany(filter, this.#Models.ingredient);
     }
 
-    async askToDeleteManyTypes(filter) {
-        return this.#Service.askToDeleteMany(filter, this.#Models.type);
+    async requestDeleteManyTypes(filter) {
+        return this.#Service.requestDeleteMany(filter, this.#Models.type);
     }
 
     async deleteManyIngredients(filter) {
@@ -114,8 +114,8 @@ class ServiceFacade {
         return this.#Service.deleteMany({}, this.#Models.meal);
     }
 
-    async askToFullFormat() {
-        return this.#Service.askToFullFormat();
+    async requestFormat() {
+        return this.#Service.requestFormat();
     }
 
     async fullFormat() {

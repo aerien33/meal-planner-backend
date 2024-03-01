@@ -102,7 +102,7 @@ class DataService {
     }
 
 
-    async askToDeleteMany(filter, Model) {
+    async requestDeleteMany(filter, Model) {
         try {
             const toDelete = await this.getItems(filter, Model);
 
@@ -155,7 +155,7 @@ class DataService {
     }
 
 
-    async askToFullFormat() {
+    async requestFormat() {
         return {warning: "Everything will be deleted, continue?"};
     }
 

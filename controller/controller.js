@@ -264,7 +264,7 @@ app.delete('/types/one/:_id', async (request, response) => {
 app.delete('/ingredients', async (request, response) => {
     try {
         const filter = request.body;
-        const info = await Service.askToDeleteManyIngredients(filter);
+        const info = await Service.requestDeleteManyIng(filter);
 
         setStatus(info, response);
         response.send(info);
@@ -279,7 +279,7 @@ app.delete('/ingredients', async (request, response) => {
 app.delete('/types', async (request, response) => {
     try {
         const filter = request.body;
-        const info = await Service.askToDeleteManyTypes(filter);
+        const info = await Service.requestDeleteManyTypes(filter);
 
         setStatus(info, response);
         response.send(info);
@@ -324,7 +324,7 @@ app.delete('/types/ok', async (request, response) => {
 app.delete('/fullFormat', async (request, response) => {
     try {
         const filter = request.body;
-        const info = await Service.askToFullFormat();
+        const info = await Service.requestFormat();
 
         setStatus(info, response);
         response.send(info);
