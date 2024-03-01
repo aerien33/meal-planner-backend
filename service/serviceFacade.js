@@ -114,6 +114,14 @@ class ServiceFacade {
         return this.#Service.deleteMany({}, this.#Models.meal);
     }
 
+    async askToFullFormat() {
+        return this.#Service.askToFullFormat();
+    }
+
+    async fullFormat() {
+        return this.#Service.fullFormat();
+    }
+
 }
 
 module.exports = ServiceFacade;

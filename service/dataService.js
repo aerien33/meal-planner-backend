@@ -155,6 +155,38 @@ class DataService {
     }
 
 
+    async askToFullFormat() {
+        return {warning: "Everything will be deleted, continue?"};
+    }
+
+
+    async fullFormat() {
+        try {
+            let info = await this.deleteMany({}, this.#Models.meal);
+            if (info.error && info.error !== "There are no items matching this filter criteria") {
+                return {error: "Could not delete all meals", info: info};
+
+            } else {
+                info = await this.deleteMany({}, this.#Models.ingredient);
+                if (info.error && info.error !== "There are no items matching this filter criteria") {
+                    return {error: "Could not delete all ingredients", info: info};
+
+                } else {
+                    info = await this.deleteMany({}, this.#Models.type);
+                    if (info.error && info.error !== "There are no items matching this filter criteria") {
+                        return {error: "Could not delete all meal types", info: info};
+                    } else {
+                        return {message: "Everything has been deleted successfully"};
+                    }
+                }
+            }
+
+        } catch {
+            return {error: "Could not format the database"};
+        }
+    }
+
+
 
 
     //Supporting methods

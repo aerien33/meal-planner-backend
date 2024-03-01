@@ -321,6 +321,36 @@ app.delete('/types/ok', async (request, response) => {
 
 
 
+app.delete('/fullFormat', async (request, response) => {
+    try {
+        const filter = request.body;
+        const info = await Service.askToFullFormat();
+
+        setStatus(info, response);
+        response.send(info);
+
+        } catch {
+            response.status(500).send({error:"Could not request to format the database"});
+        }
+});
+
+
+
+app.delete('/fullFormat/ok', async (request, response) => {
+    try {
+        const filter = request.body;
+        const info = await Service.fullFormat();
+
+        setStatus(info, response);
+        response.send(info);
+
+        } catch {
+            response.status(500).send({error:"Could not format the database"});
+        }
+});
+
+
+
 
 app.listen(3004, function() {
     console.log("Meal Planner API running on port 3004...");
