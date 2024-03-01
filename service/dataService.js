@@ -92,7 +92,7 @@ class DataService {
                  if (info.error) {
                      return info;
 				 } else {
-                     return {"message":"Deleted the following items", "items":[item]};
+                     return {message: "Deleted the following item", items: [item]};
                  }
              }
 
@@ -109,7 +109,15 @@ class DataService {
             if (toDelete.error) {
                 return toDelete;
             } else {
-                return {"warning":"The following items will be deleted", "items":toDelete};
+                let msg  = "The following ";
+                if (toDelete.length == 1) {
+                    msg += "item";
+                } else {
+                    msg += toDelete.length + " items";
+                }
+                msg += " will be deleted";
+
+                return {warning: msg, items: toDelete};
             }
 
         } catch {
@@ -130,12 +138,19 @@ class DataService {
                 if (info.error) {
                     return info;
                 } else {
-                    return {"message":"Deleted the following items", "items":toDelete};
+                    let msg  = "Deleted the following ";
+                    if (info.deletedCount == 1) {
+                        msg += "item";
+                    } else {
+                        msg += info.deletedCount + " items";
+                    }
+
+                    return {message: msg, items: toDelete};
                 }
             }
 
         } catch {
-            return {error: "Could not send the request to delete the items"};
+            return {error: "Could not delete the items"};
         }
     }
 
@@ -239,5 +254,6 @@ class DataService {
     }
 
 }
+
 
 module.exports = DataService;
