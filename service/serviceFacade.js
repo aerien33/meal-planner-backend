@@ -90,6 +90,10 @@ class ServiceFacade {
         return this.#Service.saveItem(id, data, this.#Models.type);
     }
 
+    async updateMeal(id, data) {
+        return this.#Service.saveItem(id, data, this.#Models.meal);
+    }
+
     async deleteIngredient(id) {
         return this.#Service.deleteItem(id, this.#Models.ingredient);
     }

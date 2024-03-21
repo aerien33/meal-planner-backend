@@ -276,6 +276,22 @@ app.put('/types/:_id', async (request, response) => {
 
 
 
+app.put('/meals/:_id', async (request, response) => {
+    try {
+        const id = request.params._id;
+        const update = request.body;
+        const saved = await Service.updateMeal(id, update);
+
+        setStatus(saved, response);
+        response.send(saved);
+
+    } catch {
+        response.status(500).send({error:"Could not update the meal"});
+    }
+});
+
+
+
 app.delete('/ingredients/one/:_id', async (request, response) => {
     try {
         const id = request.params._id;
