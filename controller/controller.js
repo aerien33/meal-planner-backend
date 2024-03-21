@@ -139,6 +139,21 @@ app.get('/types/filter', async (request, response) => {
 
 
 
+app.get('/meals/filter', async (request, response) => {
+    try {
+        const filter = request.body;
+        const meals = await Service.getMeals(filter);
+
+        setStatus(meals, response);
+        response.send(meals);
+
+    } catch {
+        response.status(500).send({error:"Could not fetch meals matching this filter criteria"});
+    }
+});
+
+
+
 app.get('/ingredients/one/filter', async (request, response) => {
     try {
         const filter = request.body;
@@ -169,6 +184,21 @@ app.get('/types/one/filter', async (request, response) => {
 
 
 
+app.get('/meals/one/filter', async (request, response) => {
+    try {
+        const filter = request.body;
+        const meal = await Service.getOneMeal(filter);
+
+        setStatus(meal, response);
+        response.send(meal);
+
+    } catch {
+        response.status(500).send({error:"Could not fetch any meal matching this filter criteria"});
+    }
+});
+
+
+
 app.get('/ingredients/one/title', async (request, response) => {
     try {
         const title = request.body.title;
@@ -194,6 +224,21 @@ app.get('/types/one/title', async (request, response) => {
 
     } catch {
         response.status(500).send({error:"Could not fetch any type of meal with this title"});
+    }
+});
+
+
+
+app.get('/meals/one/title', async (request, response) => {
+    try {
+        const title = request.body.title;
+        const meal = await Service.getOneMealByTitle(title);
+
+        setStatus(meal, response);
+        response.send(meal);
+
+    } catch {
+        response.status(500).send({error:"Could not fetch any meal with this title"});
     }
 });
 

@@ -54,6 +54,10 @@ class ServiceFacade {
         return this.#Service.getItems(filter, this.#Models.type);
     }
 
+    async getMeals(filter) {
+        return this.#Service.getItems(filter, this.#Models.meal);
+    }
+
     async getOneIngredient(filter) {
         return this.#Service.getItemByFilter(filter, this.#Models.ingredient);
     }
@@ -62,12 +66,20 @@ class ServiceFacade {
         return this.#Service.getItemByFilter(filter, this.#Models.type);
     }
 
+    async getOneMeal(filter) {
+        return this.#Service.getItemByFilter(filter, this.#Models.meal);
+    }
+
     async getOneIngredientByTitle(title) {
         return this.#Service.getItemByTitle(title, this.#Models.ingredient);
     }
 
     async getOneTypeByTitle(title) {
         return this.#Service.getItemByTitle(title, this.#Models.type);
+    }
+
+    async getOneMealByTitle(title) {
+        return this.#Service.getItemByTitle(title, this.#Models.meal);
     }
 
     async updateIngredient(id, data) {
