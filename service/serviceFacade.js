@@ -19,6 +19,9 @@ class ServiceFacade {
     }
 
 
+    async test123(data) {
+        return this.#Service.test123(data);
+    }
 
     async createIngredient(data) {
         return this.#Service.saveItem(null, data, this.#Models.ingredient);

@@ -21,6 +21,21 @@ function setStatus(obj, response) {
 }
 
 
+//Path for testing new methods
+app.get('/test123', async (request, response) => {
+    try {
+        const data = request.body;
+        const returned = await Service.test123(data);
+
+        setStatus(returned, response);
+        response.send(returned);
+
+    } catch {
+        response.status(500).send({error:"Could not test the given method"});
+    }
+});
+
+
 
 app.post('/ingredients', async (request, response) => {
     try {
