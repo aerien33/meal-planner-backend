@@ -46,7 +46,10 @@ class Mapper {
             meal.recipe = data.recipe;
 
             const type = await this.#Service.getItemByTitle(data.typeTitle, this.#Models.type);
-            if (type.error) {
+
+            if (type.error && type.error === "Could not find any item with this title") {
+                return {error: "Could not find any type of meal with this title. Please add this type of meal first before saving a meal"};
+            } else if (type.error) {
                 return type;
             } else {
                 meal.type = type._id;

@@ -243,7 +243,7 @@ class DataService {
             const item = await Model.findById(id, '-__v');
 
             if (item == null) {
-                return {error: "Could not find any item with this ID"}
+                return {error: "Could not find any item with this ID"};
             } else {
                 return item;
             }
@@ -259,7 +259,7 @@ class DataService {
             const item = await Model.findOne(filter, '-__v');
 
             if (item == null) {
-                return {error: "Could not find any item matching this filter criteria"}
+                return {error: "Could not find any item matching this filter criteria"};
             } else {
                 return item;
             }
@@ -274,7 +274,7 @@ class DataService {
         try {
             const item = await this.getItemByFilter({"title":title}, Model);
 
-            if (item == null) {
+            if (item.error) {
                 return {error: "Could not find any item with this title"};
             } else {
                 return item;
